@@ -47,15 +47,17 @@ internal sealed class DutyConfigComponent : ConfigComponent
             .Select(x => x.Content.ValueNullable)
             .Where(x => x != null)
             .Select(x => x!.Value)
+            .Select(x => new { Content = x, Territory = x.TerritoryType.ValueNullable })
+            .Where(x => x.Territory != null)
             .Select(x => new
             {
-                Expansion = (EExpansionVersion)x.TerritoryType.Value.ExVersion.RowId,
-                CfcId = x.RowId,
-                Name = territoryData.GetContentFinderCondition(x.RowId)?.Name ?? "?",
-                TerritoryId = x.TerritoryType.RowId,
-                ContentType = x.ContentType.RowId,
-                Level = x.ClassJobLevelRequired,
-                x.SortKey
+                Expansion = (EExpansionVersion)x.Territory!.Value.ExVersion.RowId,
+                CfcId = x.Content.RowId,
+                Name = territoryData.GetContentFinderCondition(x.Content.RowId)?.Name ?? "?",
+                TerritoryId = x.Content.TerritoryType.RowId,
+                ContentType = x.Content.ContentType.RowId,
+                Level = x.Content.ClassJobLevelRequired,
+                x.Content.SortKey
             })
             .GroupBy(x => x.Expansion)
             .ToDictionary(x => x.Key,
