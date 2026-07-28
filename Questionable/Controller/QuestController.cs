@@ -688,8 +688,9 @@ internal sealed class QuestController : MiniTaskController<QuestController>
 
     internal void AbandonQuest(QuestId questId)
     {
-        _logger.LogInformation($"AbandonQuest: {questId}");
-        GameMain.ExecuteCommand(900, (int)questId.Value, 0, 0, 0);
+        _logger.LogWarning(
+            "AbandonQuest is unavailable on the Taiwan API13 ClientStructs build; abandon quest {QuestId} through the journal instead",
+            questId);
     }
 
     internal void AbandonQuest(string questId)
