@@ -16,18 +16,18 @@ namespace Questionable.Windows.ConfigComponents;
 
 internal sealed class GeneralConfigComponent : ConfigComponent
 {
-    private static readonly List<(uint Id, string Name)> DefaultMounts = [(0, "Mount Roulette")];
-    private static readonly List<(EClassJob ClassJob, string Name)> DefaultClassJobs = [(EClassJob.Adventurer, "Auto (highest level/item level)")];
+    private static readonly List<(uint Id, string Name)> DefaultMounts = [(0, "隨機坐騎")];
+    private static readonly List<(EClassJob ClassJob, string Name)> DefaultClassJobs = [(EClassJob.Adventurer, "自動（最高等級／品級）")];
 
     private readonly QuestRegistry _questRegistry;
     private readonly TerritoryData _territoryData;
 
     private readonly uint[] _mountIds;
     private readonly string[] _mountNames;
-    private readonly string[] _combatModuleNames = ["None", "Boss Mod (VBM)", "Wrath Combo", "Rotation Solver Reborn"];
+    private readonly string[] _combatModuleNames = ["無", "Boss Mod (VBM)", "Wrath Combo", "Rotation Solver Reborn"];
 
     private readonly string[] _grandCompanyNames =
-        ["None (manually pick quest)", "Maelstrom", "Twin Adder", "Immortal Flames"];
+        ["無（手動選擇任務）", "黑渦團", "雙蛇黨", "恆輝隊"];
 
     private readonly EClassJob[] _classJobIds;
     private readonly string[] _classJobNames;
@@ -86,14 +86,14 @@ internal sealed class GeneralConfigComponent : ConfigComponent
 
     public override void DrawTab()
     {
-        using var tab = ImRaii.TabItem("General###General");
+        using var tab = ImRaii.TabItem("一般###General");
         if (!tab)
             return;
 
 
         {
             int selectedCombatModule = (int)Configuration.General.CombatModule;
-            if (ImGui.Combo("Preferred Combat Module", ref selectedCombatModule, _combatModuleNames,
+            if (ImGui.Combo("偏好的戰鬥模組", ref selectedCombatModule, _combatModuleNames,
                     _combatModuleNames.Length))
             {
                 Configuration.General.CombatModule = (Configuration.ECombatModule)selectedCombatModule;
@@ -109,14 +109,14 @@ internal sealed class GeneralConfigComponent : ConfigComponent
             Save();
         }
 
-        if (ImGui.Combo("Preferred Mount", ref selectedMount, _mountNames, _mountNames.Length))
+        if (ImGui.Combo("偏好的坐騎", ref selectedMount, _mountNames, _mountNames.Length))
         {
             Configuration.General.MountId = _mountIds[selectedMount];
             Save();
         }
 
         int grandCompany = (int)Configuration.General.GrandCompany;
-        if (ImGui.Combo("Preferred Grand Company", ref grandCompany, _grandCompanyNames,
+        if (ImGui.Combo("偏好的大國防聯軍", ref grandCompany, _grandCompanyNames,
                 _grandCompanyNames.Length))
         {
             Configuration.General.GrandCompany = (GrandCompany)grandCompany;
@@ -132,7 +132,7 @@ internal sealed class GeneralConfigComponent : ConfigComponent
             combatJob = 0;
         }
 
-        if (ImGui.Combo("Preferred Combat Job", ref combatJob, _classJobNames, _classJobNames.Length))
+        if (ImGui.Combo("偏好的戰鬥特職", ref combatJob, _classJobNames, _classJobNames.Length))
         {
             Configuration.General.CombatJob = _classJobIds[combatJob];
             Save();
@@ -148,7 +148,7 @@ internal sealed class GeneralConfigComponent : ConfigComponent
             craftingJob = 8;
         }
 
-        if (ImGui.Combo("Preferred Crafting Job", ref craftingJob, _craftJobNames, _craftJobNames.Length))
+        if (ImGui.Combo("偏好的製作職業", ref craftingJob, _craftJobNames, _craftJobNames.Length))
         {
             Configuration.General.CraftingJob = _craftJobIds[craftingJob];
             Save();
@@ -164,7 +164,7 @@ internal sealed class GeneralConfigComponent : ConfigComponent
             gatherJob = 16;
         }
 
-        if (ImGui.Combo("Preferred Gathering Job", ref gatherJob, _gatherJobNames, _gatherJobNames.Length))
+        if (ImGui.Combo("偏好的採集職業", ref gatherJob, _gatherJobNames, _gatherJobNames.Length))
         {
             Configuration.General.GatheringJob = _gatherJobIds[gatherJob];
             Save();
@@ -175,28 +175,28 @@ internal sealed class GeneralConfigComponent : ConfigComponent
         using (ImRaii.PushIndent())
         {
             bool hideInAllInstances = Configuration.General.HideInAllInstances;
-            if (ImGui.Checkbox("Hide quest window in all instanced duties", ref hideInAllInstances))
+            if (ImGui.Checkbox("在所有副本中隱藏任務視窗", ref hideInAllInstances))
             {
                 Configuration.General.HideInAllInstances = hideInAllInstances;
                 Save();
             }
 
             bool useEscToCancelQuesting = Configuration.General.UseEscToCancelQuesting;
-            if (ImGui.Checkbox("Use ESC to cancel questing/movement", ref useEscToCancelQuesting))
+            if (ImGui.Checkbox("使用 ESC 取消任務執行／移動", ref useEscToCancelQuesting))
             {
                 Configuration.General.UseEscToCancelQuesting = useEscToCancelQuesting;
                 Save();
             }
 
             bool showIncompleteSeasonalEvents = Configuration.General.ShowIncompleteSeasonalEvents;
-            if (ImGui.Checkbox("Show details for incomplete seasonal events", ref showIncompleteSeasonalEvents))
+            if (ImGui.Checkbox("顯示尚未完成的季節活動詳情", ref showIncompleteSeasonalEvents))
             {
                 Configuration.General.ShowIncompleteSeasonalEvents = showIncompleteSeasonalEvents;
                 Save();
             }
 
             bool hideSponsorButton = Configuration.General.HideSponsorButton;
-            if (ImGui.Checkbox("Hide Sponsor button", ref hideSponsorButton))
+            if (ImGui.Checkbox("隱藏贊助按鈕", ref hideSponsorButton))
             {
                 Configuration.General.HideSponsorButton = hideSponsorButton;
                 Save();
@@ -204,11 +204,11 @@ internal sealed class GeneralConfigComponent : ConfigComponent
         }
 
         ImGui.Separator();
-        ImGui.Text("Questing");
+        ImGui.Text("任務執行");
         using (ImRaii.PushIndent())
         {
             bool configureTextAdvance = Configuration.General.ConfigureTextAdvance;
-            if (ImGui.Checkbox("Automatically configure TextAdvance with the recommended settings",
+            if (ImGui.Checkbox("自動套用 TextAdvance 的建議設定",
                     ref configureTextAdvance))
             {
                 Configuration.General.ConfigureTextAdvance = configureTextAdvance;
@@ -216,7 +216,7 @@ internal sealed class GeneralConfigComponent : ConfigComponent
             }
 
             bool skipLowPriorityInstances = Configuration.General.SkipLowPriorityDuties;
-            if (ImGui.Checkbox("Unlock certain optional dungeons and raids (instead of waiting for completion)", ref skipLowPriorityInstances))
+            if (ImGui.Checkbox("解鎖部分選擇性迷宮與大型任務（不等待手動完成）", ref skipLowPriorityInstances))
             {
                 Configuration.General.SkipLowPriorityDuties = skipLowPriorityInstances;
                 Save();
@@ -232,11 +232,11 @@ internal sealed class GeneralConfigComponent : ConfigComponent
             {
                 using (ImRaii.Tooltip())
                 {
-                    ImGui.Text("Questionable automatically picks up some optional quests (e.g. for aether currents, or the ARR alliance raids).");
-                    ImGui.Text("If this setting is enabled, Questionable will continue with other quests, instead of waiting for manual completion of the duty.");
+                    ImGui.Text("Questionable 會自動接取部分選擇性任務（例如風脈任務或 2.0 聯盟大型任務）。");
+                    ImGui.Text("啟用後，Questionable 會繼續執行其他任務，不會等待你手動完成副本。");
 
                     ImGui.Separator();
-                    ImGui.Text("This affects the following dungeons and raids:");
+                    ImGui.Text("此設定會影響下列迷宮與大型任務：");
                     foreach (var lowPriorityCfc in _questRegistry.LowPriorityContentFinderConditionQuests)
                     {
                         if (_territoryData.TryGetContentFinderCondition(lowPriorityCfc.ContentFinderConditionId, out var cfcData))
@@ -248,7 +248,7 @@ internal sealed class GeneralConfigComponent : ConfigComponent
             }
 
             bool useTickets = Configuration.General.UseTickets;
-            if (ImGui.Checkbox("Use aetheryte tickets where available", ref useTickets))
+            if (ImGui.Checkbox("可使用時優先使用傳送網使用券", ref useTickets))
             {
                 Configuration.General.UseTickets = useTickets;
                 Save();
@@ -258,7 +258,7 @@ internal sealed class GeneralConfigComponent : ConfigComponent
             {
                 using (ImRaii.Tooltip())
                 {
-                    ImGui.Text("Ideally this should be set in the in-game Teleport settings, but is provided here for convenience.");
+                    ImGui.Text("建議優先使用遊戲內的傳送設定；此選項僅為方便使用。");
                 }
             }
 

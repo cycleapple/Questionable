@@ -149,7 +149,7 @@ internal sealed class PluginConfigComponent : ConfigComponent
 
     public override void DrawTab()
     {
-        using var tab = ImRaii.TabItem("Dependencies###Plugins");
+        using var tab = ImRaii.TabItem("相依插件###Plugins");
         if (!tab)
             return;
 
@@ -160,7 +160,7 @@ internal sealed class PluginConfigComponent : ConfigComponent
         ImGui.Spacing();
 
         if (allRequiredInstalled)
-            ImGui.TextColored(ImGuiColors.ParsedGreen, "All required plugins are installed.");
+            ImGui.TextColored(ImGuiColors.ParsedGreen, "所有必要插件均已安裝。");
         else
             ImGui.TextColored(ImGuiColors.DalamudRed,
                 "Required plugins are missing, Questionable will not work properly.");
@@ -175,7 +175,7 @@ internal sealed class PluginConfigComponent : ConfigComponent
                                ImGui.GetStyle().ItemSpacing.X;
         }
 
-        ImGui.Text("Questionable requires the following plugins to work:");
+        ImGui.Text("Questionable 需要下列插件才能運作：");
         allRequiredInstalled = true;
         using (ImRaii.PushIndent())
         {
@@ -187,7 +187,7 @@ internal sealed class PluginConfigComponent : ConfigComponent
         ImGui.Separator();
         ImGui.Spacing();
 
-        ImGui.Text("Questionable recommends Boss Mod (VBM) for rotation/combat automation.");
+        ImGui.Text("Questionable 建議使用 Boss Mod（VBM）進行戰鬥自動化。");
 
         using (ImRaii.Disabled(_combatController.IsRunning))
         {
@@ -203,7 +203,7 @@ internal sealed class PluginConfigComponent : ConfigComponent
                 allRequiredInstalled &= DrawCombatPlugin(Configuration.ECombatModule.BossMod, checklistPadding);
                 allRequiredInstalled &= DrawCombatPlugin(Configuration.ECombatModule.WrathCombo, checklistPadding);
             }
-            ImGui.Text("The following rotation/combat plugin(s) are provided for compatibility and testing purposes:");
+            ImGui.Text("下列循環／戰鬥插件僅供相容性與測試用途：");
             using (ImRaii.PushIndent())
             {
                 allRequiredInstalled &=
@@ -215,7 +215,7 @@ internal sealed class PluginConfigComponent : ConfigComponent
         ImGui.Separator();
         ImGui.Spacing();
 
-        ImGui.Text("The following plugins are recommended, but not required:");
+        ImGui.Text("建議安裝下列插件，但並非必要：");
         using (ImRaii.PushIndent())
         {
             foreach (var plugin in _recommendedPlugins)
@@ -306,19 +306,19 @@ internal sealed class PluginConfigComponent : ConfigComponent
             {
                 if (!allDetailsOk && plugin.ConfigCommand != null && plugin.ConfigCommand.StartsWith('/'))
                 {
-                    if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Cog, "Open configuration"))
+                    if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Cog, "開啟設定"))
                         _commandManager.ProcessCommand(plugin.ConfigCommand);
                 }
             }
             else
             {
-                if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Globe, "Open Website"))
+                if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Globe, "開啟網站"))
                     Util.OpenLink(plugin.WebsiteUri.ToString());
 
                 ImGui.SameLine();
                 if (plugin.DalamudRepositoryUri != null)
                 {
-                    if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Code, "Open Repository"))
+                    if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Code, "開啟原始碼倉庫"))
                         Util.OpenLink(plugin.DalamudRepositoryUri.ToString());
                 }
                 else

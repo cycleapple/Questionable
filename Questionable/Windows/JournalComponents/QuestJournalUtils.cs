@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
 using Dalamud.Interface.Components;
@@ -36,7 +36,7 @@ internal sealed class QuestJournalUtils
 
         using (ImRaii.Disabled(quest == null))
         {
-            if (ImGui.MenuItem("Add to Priority Quests") && quest != null)
+            if (ImGui.MenuItem("加入優先任務") && quest != null)
             {
                 _questController.AddQuestPriority(quest.Id);
             }
@@ -44,20 +44,20 @@ internal sealed class QuestJournalUtils
 
         using (ImRaii.Disabled(!_questFunctions.IsReadyToAcceptQuest(questInfo.QuestId)))
         {
-            if (ImGui.MenuItem("Start as next quest"))
+            if (ImGui.MenuItem("作為下一個任務開始"))
             {
                 _questController.SetNextQuest(quest);
                 _questController.Start(label);
             }
 
-            if (ImGui.MenuItem("Set as next quest"))
+            if (ImGui.MenuItem("設為下一個任務"))
                 _questController.SetNextQuest(quest);
         }
 
         bool openInQuestMap = _commandManager.Commands.ContainsKey("/questinfo");
         using (ImRaii.Disabled(!(questInfo.QuestId is QuestId) || !openInQuestMap))
         {
-            if (ImGui.MenuItem("View in Quest Map"))
+            if (ImGui.MenuItem("在 Quest Map 中檢視"))
             {
                 _commandManager.ProcessCommand($"/questinfo {questInfo.QuestId}");
             }
@@ -66,15 +66,15 @@ internal sealed class QuestJournalUtils
 
     internal static void ShowFilterContextMenu(QuestJournalComponent journalUi)
     {
-        if (ImGuiComponents.IconButtonWithText(Dalamud.Interface.FontAwesomeIcon.Filter, "Filter"))
+        if (ImGuiComponents.IconButtonWithText(Dalamud.Interface.FontAwesomeIcon.Filter, "篩選"))
             ImGui.OpenPopup("##QuestFilters");
 
         using var popup = ImRaii.Popup("##QuestFilters");
         if (!popup)
             return;
 
-        if (ImGui.Checkbox("Show only Available Quests", ref journalUi.Filter.AvailableOnly) ||
-            ImGui.Checkbox("Hide Quests Without Path", ref journalUi.Filter.HideNoPaths))
+        if (ImGui.Checkbox("只顯示可接取任務", ref journalUi.Filter.AvailableOnly) ||
+            ImGui.Checkbox("隱藏沒有路徑的任務", ref journalUi.Filter.HideNoPaths))
             journalUi.UpdateFilter();
     }
 
@@ -87,7 +87,7 @@ internal sealed class QuestJournalUtils
         if (!popup)
             return;
 
-        if (ImGui.MenuItem("Add all to Priority Quests"))
+        if (ImGui.MenuItem("全部加入優先任務"))
         {
             foreach (var quest in quests)
             {
@@ -95,7 +95,7 @@ internal sealed class QuestJournalUtils
             }
         }
 
-        if (ImGui.MenuItem("Remove all from Priority Quests"))
+        if (ImGui.MenuItem("全部移出優先任務"))
         {
             foreach (var quest in quests)
             {

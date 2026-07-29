@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Game.Text;
@@ -35,11 +35,11 @@ internal sealed class QuestRewardComponent
 
     public void DrawItemRewards()
     {
-        using var tab = ImRaii.TabItem("Item Rewards");
+        using var tab = ImRaii.TabItem("物品獎勵###Item Rewards");
         if (!tab)
             return;
 
-        ImGui.Checkbox("Show rewards from seasonal event quests", ref _showEventRewards);
+        ImGui.Checkbox("顯示季節活動任務獎勵", ref _showEventRewards);
         ImGui.Spacing();
 
         ImGui.BulletText(

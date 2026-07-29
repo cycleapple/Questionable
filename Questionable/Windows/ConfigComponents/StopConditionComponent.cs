@@ -58,12 +58,12 @@ internal sealed class StopConditionComponent : ConfigComponent
 
     public override void DrawTab()
     {
-        using var tab = ImRaii.TabItem("Stop###StopConditionns");
+        using var tab = ImRaii.TabItem("停止條件###StopConditionns");
         if (!tab)
             return;
 
         bool enabled = Configuration.Stop.Enabled;
-        if (ImGui.Checkbox("Stop Questionable when any of the conditions below are met", ref enabled))
+        if (ImGui.Checkbox("符合以下任一條件時停止 Questionable", ref enabled))
         {
             Configuration.Stop.Enabled = enabled;
             Save();
@@ -74,10 +74,10 @@ internal sealed class StopConditionComponent : ConfigComponent
         using (ImRaii.Disabled(!enabled))
         {
             // Level stop condition section
-            ImGui.Text("Stop when character level reaches:");
+            ImGui.Text("角色達到下列等級時停止：");
 
             bool levelToStopAfter = Configuration.Stop.LevelToStopAfter;
-            if (ImGui.Checkbox("Enable level stop condition", ref levelToStopAfter))
+            if (ImGui.Checkbox("啟用等級停止條件", ref levelToStopAfter))
             {
                 Configuration.Stop.LevelToStopAfter = levelToStopAfter;
                 Save();
@@ -87,7 +87,7 @@ internal sealed class StopConditionComponent : ConfigComponent
             {
                 int targetLevel = Configuration.Stop.TargetLevel;
                 ImGui.SetNextItemWidth(100);
-                if (ImGui.InputInt("Stop at level", ref targetLevel, 1, 5))
+                if (ImGui.InputInt("停止等級", ref targetLevel, 1, 5))
                 {
                     Configuration.Stop.TargetLevel = Math.Max(1, Math.Min(100, targetLevel));
                     Save();
@@ -109,7 +109,7 @@ internal sealed class StopConditionComponent : ConfigComponent
             ImGui.Separator();
 
             // Quest completion stop condition section
-            ImGui.Text("Stop when completing any of the quests selected below:");
+            ImGui.Text("完成下列任一任務時停止：");
 
             _questSelector.DrawSelection();
 
@@ -120,7 +120,7 @@ internal sealed class StopConditionComponent : ConfigComponent
             {
                 using (ImRaii.Disabled(!ImGui.IsKeyDown(ImGuiKey.ModCtrl)))
                 {
-                    if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Trash, "Clear All"))
+                    if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Trash, "全部清除"))
                     {
                         Configuration.Stop.QuestsToStopAfter.Clear();
                         Save();
@@ -128,7 +128,7 @@ internal sealed class StopConditionComponent : ConfigComponent
                 }
 
                 if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
-                    ImGui.SetTooltip("Hold CTRL to enable this button.");
+                    ImGui.SetTooltip("按住 Ctrl 即可使用此按鈕。");
 
                 ImGui.Separator();
             }

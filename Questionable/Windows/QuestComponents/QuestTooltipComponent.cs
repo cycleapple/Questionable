@@ -1,4 +1,4 @@
-﻿using Dalamud.Bindings.ImGui;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Game.Text;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
@@ -54,19 +54,19 @@ internal sealed class QuestTooltipComponent
         if (questInfo is QuestInfo { IsSeasonalEvent: true })
         {
             ImGui.SameLine();
-            ImGui.TextUnformatted("Event");
+            ImGui.TextUnformatted("活動");
         }
 
         if (questInfo.IsRepeatable)
         {
             ImGui.SameLine();
-            ImGui.TextUnformatted("Repeatable");
+            ImGui.TextUnformatted("可重複");
         }
 
         if (questInfo is QuestInfo { CompletesInstantly: true })
         {
             ImGui.SameLine();
-            ImGui.TextUnformatted("Instant");
+            ImGui.TextUnformatted("立即");
         }
 
         if (_questRegistry.TryGetQuest(questInfo.QuestId, out Quest? quest))
@@ -74,7 +74,7 @@ internal sealed class QuestTooltipComponent
             if (quest.Root.Disabled)
             {
                 ImGui.SameLine();
-                ImGui.TextColored(ImGuiColors.DalamudRed, "Disabled");
+                ImGui.TextColored(ImGuiColors.DalamudRed, "已停用");
             }
 
             if (quest.Root.Author.Count == 1)
@@ -94,7 +94,7 @@ internal sealed class QuestTooltipComponent
         else
         {
             ImGui.SameLine();
-            ImGui.TextColored(ImGuiColors.DalamudRed, "NoQuestPath");
+            ImGui.TextColored(ImGuiColors.DalamudRed, "沒有任務路徑");
         }
 
         DrawQuestUnlocks(questInfo, 0, showItemRewards);
@@ -217,7 +217,7 @@ internal sealed class QuestTooltipComponent
             if (showItemRewards && actualQuestInfo.ItemRewards.Count > 0)
             {
                 ImGui.Separator();
-                ImGui.Text("Item Rewards:");
+                ImGui.Text("物品獎勵：");
                 foreach (var reward in actualQuestInfo.ItemRewards)
                 {
                     ImGui.BulletText(reward.Name);

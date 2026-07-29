@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -20,7 +20,7 @@ namespace Questionable.Windows.JournalComponents;
 internal sealed class AlliedSocietyJournalComponent
 {
     private static readonly string[] RankNames =
-        ["Neutral", "Recognized", "Friendly", "Trusted", "Respected", "Honored", "Sworn", "Allied"];
+        ["中立", "認可", "友好", "信賴", "尊敬", "名譽", "誓約", "同盟"];
 
     private readonly QuestFunctions _questFunctions;
     private readonly QuestController _questController;
@@ -53,7 +53,7 @@ internal sealed class AlliedSocietyJournalComponent
 
     public void DrawAlliedSocietyQuests()
     {
-        using var tab = ImRaii.TabItem("Allied Societies");
+        using var tab = ImRaii.TabItem("友好部族###Allied Societies");
         if (!tab)
             return;
         bool addPending = false;

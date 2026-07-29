@@ -1,4 +1,4 @@
-﻿using Dalamud.Bindings.ImGui;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Plugin;
 using LLib.ImGui;
@@ -28,7 +28,7 @@ internal sealed class ConfigWindow : LWindow, IPersistableWindowConfig
         NotificationConfigComponent notificationConfigComponent,
         DebugConfigComponent debugConfigComponent,
         Configuration configuration)
-        : base("Config - Questionable###QuestionableConfig", ImGuiWindowFlags.AlwaysAutoResize)
+        : base("設定 - Questionable###QuestionableConfig", ImGuiWindowFlags.AlwaysAutoResize)
     {
         _pluginInterface = pluginInterface;
         _generalConfigComponent = generalConfigComponent;

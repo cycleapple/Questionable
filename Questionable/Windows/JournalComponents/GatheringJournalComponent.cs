@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -148,7 +148,7 @@ internal sealed class GatheringJournalComponent
 
     public void DrawGatheringItems()
     {
-        using var tab = ImRaii.TabItem("Gathering Points");
+        using var tab = ImRaii.TabItem("採集點###Gathering Points");
         if (!tab)
             return;
 
@@ -162,16 +162,16 @@ internal sealed class GatheringJournalComponent
             if (!table)
                 return;
 
-            ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.NoHide);
-            ImGui.TableSetupColumn("Supported", ImGuiTableColumnFlags.WidthFixed, 100 * ImGui.GetIO().FontGlobalScale);
-            ImGui.TableSetupColumn("Collected", ImGuiTableColumnFlags.WidthFixed, 100 * ImGui.GetIO().FontGlobalScale);
+            ImGui.TableSetupColumn("名稱", ImGuiTableColumnFlags.NoHide);
+            ImGui.TableSetupColumn("支援狀態", ImGuiTableColumnFlags.WidthFixed, 100 * ImGui.GetIO().FontGlobalScale);
+            ImGui.TableSetupColumn("已收集", ImGuiTableColumnFlags.WidthFixed, 100 * ImGui.GetIO().FontGlobalScale);
             ImGui.TableHeadersRow();
 
             foreach (var expansion in _filteredExpansions)
                 DrawExpansion(expansion);
         }
         else
-            ImGui.Text("No area, gathering point or item matches your search text.");
+            ImGui.Text("找不到符合搜尋文字的區域、採集點或物品。");
     }
 
     private void DrawExpansion(FilteredExpansion expansion)

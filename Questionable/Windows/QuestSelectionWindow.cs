@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using Dalamud.Bindings.ImGui;
@@ -54,7 +54,7 @@ internal sealed class QuestSelectionWindow : LWindow
         IClientState clientState,
         UiUtils uiUtils,
         QuestTooltipComponent questTooltipComponent)
-        : base($"Quest Selection{WindowId}")
+        : base($"任務選擇###Quest Selection{WindowId}")
     {
         _questData = questData;
         _gameGui = gameGui;
@@ -135,7 +135,7 @@ internal sealed class QuestSelectionWindow : LWindow
     public override void DrawContent()
     {
         if (_offeredQuests.Count != 0)
-            ImGui.Checkbox("Only show quests currently offered", ref _onlyAvailableQuests);
+            ImGui.Checkbox("只顯示目前可接取的任務", ref _onlyAvailableQuests);
 
         using var table = ImRaii.Table("QuestSelection", 4, ImGuiTableFlags.Borders | ImGuiTableFlags.ScrollY);
         if (!table)
@@ -160,8 +160,8 @@ internal sealed class QuestSelectionWindow : LWindow
 
         ImGui.TableSetupColumn("Id", ImGuiTableColumnFlags.WidthFixed, 50 * ImGui.GetIO().FontGlobalScale);
         ImGui.TableSetupColumn("", ImGuiTableColumnFlags.WidthFixed, statusIconSize);
-        ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.None, 200);
-        ImGui.TableSetupColumn("Actions", ImGuiTableColumnFlags.WidthFixed, actionIconSize);
+        ImGui.TableSetupColumn("名稱", ImGuiTableColumnFlags.None, 200);
+        ImGui.TableSetupColumn("操作", ImGuiTableColumnFlags.WidthFixed, actionIconSize);
         ImGui.TableHeadersRow();
 
         foreach (IQuestInfo quest in (_offeredQuests.Count != 0 && _onlyAvailableQuests) ? _offeredQuests : _quests)
@@ -213,7 +213,7 @@ internal sealed class QuestSelectionWindow : LWindow
 
                 bool copy = ImGuiComponents.IconButton(FontAwesomeIcon.Copy);
                 if (ImGui.IsItemHovered())
-                    ImGui.SetTooltip("Copy as file name");
+                    ImGui.SetTooltip("複製為檔案名稱");
                 if (copy)
                     CopyToClipboard(quest, true);
                 else if (ImGui.IsItemClicked(ImGuiMouseButton.Right))
@@ -229,7 +229,7 @@ internal sealed class QuestSelectionWindow : LWindow
 
                     bool startNextQuest = ImGuiComponents.IconButton(FontAwesomeIcon.Play);
                     if (ImGui.IsItemHovered())
-                        ImGui.SetTooltip("Start as next quest");
+                        ImGui.SetTooltip("作為下一個任務開始");
                     if (startNextQuest)
                     {
                         _questController.SetNextQuest(knownQuest);
@@ -240,7 +240,7 @@ internal sealed class QuestSelectionWindow : LWindow
 
                     bool setNextQuest = ImGuiComponents.IconButton(FontAwesomeIcon.AngleDoubleRight);
                     if (ImGui.IsItemHovered())
-                        ImGui.SetTooltip("Set as next quest");
+                        ImGui.SetTooltip("設為下一個任務");
                     if (setNextQuest)
                         _questController.SetNextQuest(knownQuest);
 

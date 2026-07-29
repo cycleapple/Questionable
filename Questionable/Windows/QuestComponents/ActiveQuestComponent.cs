@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -85,7 +85,7 @@ internal sealed partial class ActiveQuestComponent
             var questWork = DrawQuestWork(currentQuest, isMinimized);
 
             if (_combatController.IsRunning)
-                ImGui.TextColored(ImGuiColors.DalamudOrange, "In Combat");
+                ImGui.TextColored(ImGuiColors.DalamudOrange, "戰鬥中");
             else if (_questController.CurrentTaskState is { } currentTaskState)
             {
                 using var _ = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudOrange);
@@ -136,9 +136,9 @@ internal sealed partial class ActiveQuestComponent
         }
         else
         {
-            ImGui.Text("No active quest");
+            ImGui.Text("目前沒有進行中的任務");
             if (!isMinimized)
-                ImGui.TextColored(ImGuiColors.DalamudGrey, $"{_questRegistry.Count} quests loaded");
+                ImGui.TextColored(ImGuiColors.DalamudGrey, $"已載入 {_questRegistry.Count} 個任務");
 
             if (ImGuiComponents.IconButton(FontAwesomeIcon.Stop))
             {
@@ -160,13 +160,13 @@ internal sealed partial class ActiveQuestComponent
         {
             using var _ = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudRed);
             ImGui.TextUnformatted(
-                $"Simulated Quest: {Shorten(currentQuest.Quest.Info.Name)} ({currentQuest.Quest.Id}) / {currentQuest.Sequence} / {currentQuest.Step}");
+                $"模擬任務：{Shorten(currentQuest.Quest.Info.Name)} ({currentQuest.Quest.Id}) / {currentQuest.Sequence} / {currentQuest.Step}");
         }
         else if (currentQuestType == QuestController.ECurrentQuestType.Gathering)
         {
             using var _ = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.ParsedGold);
             ImGui.TextUnformatted(
-                $"Gathering: {Shorten(currentQuest.Quest.Info.Name)} ({currentQuest.Quest.Id}) / {currentQuest.Sequence} / {currentQuest.Step}");
+                $"採集：{Shorten(currentQuest.Quest.Info.Name)} ({currentQuest.Quest.Id}) / {currentQuest.Sequence} / {currentQuest.Step}");
         }
         else
         {
@@ -186,12 +186,12 @@ internal sealed partial class ActiveQuestComponent
                 }
 
                 ImGui.TextUnformatted(
-                    $"Quest: {Shorten(startedQuest.Quest.Info.Name)} ({startedQuest.Quest.Id}) / {startedQuest.Sequence} / {startedQuest.Step}");
+                    $"任務：{Shorten(startedQuest.Quest.Info.Name)} ({startedQuest.Quest.Id}) / {startedQuest.Sequence} / {startedQuest.Step}");
 
                 if (startedQuest.Quest.Root.Disabled)
                 {
                     ImGui.SameLine();
-                    ImGui.TextColored(ImGuiColors.DalamudRed, "Disabled");
+                    ImGui.TextColored(ImGuiColors.DalamudRed, "已停用");
                 }
 
                 bool hasLevelCondition = _configuration.Stop.Enabled && _configuration.Stop.LevelToStopAfter;
@@ -227,7 +227,7 @@ internal sealed partial class ActiveQuestComponent
                         using var tooltip = ImRaii.Tooltip();
                         if (tooltip)
                         {
-                            ImGui.Text("Stop Conditions:");
+                            ImGui.Text("停止條件：");
                             ImGui.Separator();
 
                             // Level stop condition
@@ -236,17 +236,17 @@ internal sealed partial class ActiveQuestComponent
                                 unsafe
                                 {
                                     int currentLevel = PlayerState.Instance()->CurrentLevel;
-                                    ImGui.BulletText($"Stop at level {_configuration.Stop.TargetLevel}");
+                                    ImGui.BulletText($"達到等級 {_configuration.Stop.TargetLevel} 時停止");
                                     if (currentLevel > 0)
                                     {
                                         ImGui.SameLine();
                                         if (currentLevel >= _configuration.Stop.TargetLevel)
                                         {
-                                            ImGui.TextColored(ImGuiColors.ParsedGreen, $"(Current: {currentLevel} - Reached!)");
+                                            ImGui.TextColored(ImGuiColors.ParsedGreen, $"（目前：{currentLevel}－已達成！）");
                                         }
                                         else
                                         {
-                                            ImGui.TextColored(ImGuiColors.ParsedBlue, $"(Current: {currentLevel})");
+                                            ImGui.TextColored(ImGuiColors.ParsedBlue, $"（目前：{currentLevel}）");
                                         }
                                     }
                                 }
@@ -258,7 +258,7 @@ internal sealed partial class ActiveQuestComponent
                                 if (hasLevelCondition)
                                     ImGui.Spacing();
 
-                                ImGui.BulletText("Stop after completing any of these quests:");
+                                ImGui.BulletText("完成下列任一任務後停止：");
                                 ImGui.Indent();
                                 foreach (var questId in _configuration.Stop.QuestsToStopAfter)
                                 {
@@ -293,9 +293,9 @@ internal sealed partial class ActiveQuestComponent
                         if (tooltip)
                         {
                             ImGui.Text(
-                                "Certain priority quest (e.g. class quests) may be started/completed by\nthe plugin prior to continuing, usually at a teleport step.");
+                                "部分優先任務（例如職業任務）可能會在繼續主流程前由插件先行開始或完成，通常會在傳送步驟切換。");
                             ImGui.Separator();
-                            ImGui.Text("Available priority quests:");
+                            ImGui.Text("可執行的優先任務：");
                             if (availablePriorityQuests.Count > 0)
                             {
                                 foreach (var questId in availablePriorityQuests)
@@ -309,7 +309,7 @@ internal sealed partial class ActiveQuestComponent
 
                             if (unavailablePriorityQuests.Count > 0)
                             {
-                                ImGui.Text("Unavailable priority quests:");
+                                ImGui.Text("目前無法執行的優先任務：");
                                 foreach (var (questId, reason) in unavailablePriorityQuests)
                                 {
                                     if (_questRegistry.TryGetQuest(questId, out var quest))
@@ -326,7 +326,7 @@ internal sealed partial class ActiveQuestComponent
             {
                 using var _ = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
                 ImGui.TextUnformatted(
-                    $"Next Quest: {Shorten(nextQuest.Quest.Info.Name)} ({nextQuest.Quest.Id}) / {nextQuest.Sequence} / {nextQuest.Step}");
+                    $"下一個任務：{Shorten(nextQuest.Quest.Info.Name)} ({nextQuest.Quest.Id}) / {nextQuest.Sequence} / {nextQuest.Step}");
             }
         }
     }
@@ -358,7 +358,7 @@ internal sealed partial class ActiveQuestComponent
             {
                 string progressText = MultipleWhitespaceRegex().Replace(questWork.ToString(), " ");
                 ImGui.SetClipboardText(progressText);
-                _chatGui.Print($"Copied '{progressText}' to clipboard");
+                _chatGui.Print($"已將「{progressText}」複製到剪貼簿");
             }
 
             if (ImGui.IsItemHovered())
@@ -381,9 +381,9 @@ internal sealed partial class ActiveQuestComponent
             using var disabled = ImRaii.Disabled();
 
             if (currentQuest.Quest.Id == _questController.NextQuest?.Quest.Id)
-                ImGui.TextUnformatted("(Next quest in story line not accepted)");
+                ImGui.TextUnformatted("（尚未接取故事線的下一個任務）");
             else
-                ImGui.TextUnformatted("(Not accepted)");
+                ImGui.TextUnformatted("（尚未接取）");
         }
 
         return questWork;
@@ -407,7 +407,7 @@ internal sealed partial class ActiveQuestComponent
             {
                 ImGui.SameLine();
 
-                if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.StepForward, "Step"))
+                if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.StepForward, "步驟"))
                 {
                     _questController.StartSingleStep("UI step");
                 }
@@ -442,14 +442,14 @@ internal sealed partial class ActiveQuestComponent
             {
                 using (ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.ParsedGreen, colored))
                 {
-                    if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.ArrowCircleRight, "Skip"))
+                    if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.ArrowCircleRight, "略過"))
                     {
                         _movementController.Stop();
                         _questController.Skip(currentQuest.Quest.Id, currentQuest.Sequence);
                     }
 
                     if (ImGui.IsItemHovered())
-                        ImGui.SetTooltip("Skip the current step of the quest path.");
+                        ImGui.SetTooltip("略過目前的任務路徑步驟。");
                 }
             }
 
@@ -483,8 +483,8 @@ internal sealed partial class ActiveQuestComponent
         var simulatedQuest = _questController.SimulatedQuest;
 
         ImGui.Separator();
-        ImGui.TextColored(ImGuiColors.DalamudRed, "Quest sim active (experimental)");
-        ImGui.Text($"Sequence: {simulatedQuest.Sequence}");
+        ImGui.TextColored(ImGuiColors.DalamudRed, "任務模擬已啟用（實驗功能）");
+        ImGui.Text($"序列：{simulatedQuest.Sequence}");
 
         ImGui.BeginDisabled(simulatedQuest.Sequence == 0);
         if (ImGuiComponents.IconButton(FontAwesomeIcon.Minus))
@@ -524,7 +524,7 @@ internal sealed partial class ActiveQuestComponent
         {
             using var _ = ImRaii.PushId("SimulatedStep");
 
-            ImGui.Text($"Step: {simulatedQuest.Step} / {simulatedSequence.Steps.Count - 1}");
+            ImGui.Text($"步驟：{simulatedQuest.Step} / {simulatedSequence.Steps.Count - 1}");
 
             ImGui.BeginDisabled(simulatedQuest.Step == 0);
             if (ImGuiComponents.IconButton(FontAwesomeIcon.Minus))
@@ -553,7 +553,7 @@ internal sealed partial class ActiveQuestComponent
 
             ImGui.EndDisabled();
 
-            if (ImGui.Button("Skip current task"))
+            if (ImGui.Button("略過目前工作"))
             {
                 _questController.SkipSimulatedTask();
             }

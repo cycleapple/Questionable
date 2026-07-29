@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -39,7 +39,7 @@ internal sealed class PriorityWindow : LWindow
     public PriorityWindow(QuestController questController, QuestFunctions questFunctions, QuestSelector questSelector,
         QuestTooltipComponent questTooltipComponent, UiUtils uiUtils, IChatGui chatGui,
         IDalamudPluginInterface pluginInterface)
-        : base("Quest Priority###QuestionableQuestPriority")
+        : base("任務優先順序###QuestionableQuestPriority")
     {
         _questController = questController;
         _questFunctions = questFunctions;
@@ -88,12 +88,12 @@ internal sealed class PriorityWindow : LWindow
 
         List<ElementId> clipboardItems = ParseClipboardItems();
         ImGui.BeginDisabled(clipboardItems.Count == 0);
-        if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Download, "Import from Clipboard"))
+        if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Download, "從剪貼簿匯入"))
             ImportFromClipboard(clipboardItems);
         ImGui.EndDisabled();
         ImGui.SameLine();
         ImGui.BeginDisabled(_questController.ManualPriorityQuests.Count == 0);
-        if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Upload, "Export to Clipboard"))
+        if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Upload, "匯出至剪貼簿"))
             ExportToClipboard();
         if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Check, "Remove finished Quests"))
             _questController.ManualPriorityQuests.RemoveAll(q => _questFunctions.IsQuestComplete(q.Id));
@@ -101,12 +101,12 @@ internal sealed class PriorityWindow : LWindow
 
         using (ImRaii.Disabled(!ImGui.IsKeyDown(ImGuiKey.ModCtrl)))
         {
-            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Trash, "Clear All"))
+            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Trash, "全部清除"))
                 _questController.ClearQuestPriority();
         }
 
         if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
-            ImGui.SetTooltip("Hold CTRL to enable this button.");
+            ImGui.SetTooltip("按住 Ctrl 即可使用此按鈕。");
 
         ImGui.EndDisabled();
     }

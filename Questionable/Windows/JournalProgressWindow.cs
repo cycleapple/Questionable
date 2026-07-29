@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Numerics;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Plugin.Services;
@@ -24,7 +24,7 @@ internal sealed class JournalProgressWindow : LWindow, IDisposable
         GatheringJournalComponent gatheringJournalComponent,
         QuestRegistry questRegistry,
         IClientState clientState)
-        : base("Journal Progress###QuestionableJournalProgress")
+        : base("任務日誌進度###QuestionableJournalProgress")
     {
         _questJournalComponent = questJournalComponent;
         _alliedSocietyJournalComponent = alliedSocietyJournalComponent;

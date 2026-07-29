@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Numerics;
@@ -68,11 +68,11 @@ internal sealed class QuickAccessButtonsComponent
 
     private void DrawQuestPriorityButton()
     {
-        if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Exclamation, "Priority Quests"))
+        if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Exclamation, "優先任務"))
             _priorityWindow.ToggleOrUncollapse();
 
         if (ImGui.IsItemHovered())
-            ImGui.SetTooltip("Configure priority quests which will be done as soon as possible.");
+            ImGui.SetTooltip("設定要儘快執行的優先任務。");
     }
 
     private void DrawRebuildNavmeshButton()
@@ -95,7 +95,7 @@ internal sealed class QuickAccessButtonsComponent
 
     private void DrawReloadDataButton()
     {
-        if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.RedoAlt, "Reload Data"))
+        if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.RedoAlt, "重新載入資料"))
             Reload?.Invoke(this, EventArgs.Empty);
     }
 
@@ -105,7 +105,7 @@ internal sealed class QuickAccessButtonsComponent
             _journalProgressWindow.IsOpenAndUncollapsed = true;
 
         if (ImGui.IsItemHovered())
-            ImGui.SetTooltip("Journal Progress");
+            ImGui.SetTooltip("任務日誌進度");
     }
 
     private static void DrawSponsorButton()

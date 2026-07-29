@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -53,7 +53,7 @@ internal sealed class QuestJournalComponent
 
     public void DrawQuests()
     {
-        using var tab = ImRaii.TabItem("Quests");
+        using var tab = ImRaii.TabItem("任務###Quests");
         if (!tab)
             return;
 
@@ -81,20 +81,20 @@ internal sealed class QuestJournalComponent
 
         if (_filteredSections.Count > 0)
         {
-            using var table = ImRaii.Table("Quests", 3, ImGuiTableFlags.NoSavedSettings);
+            using var table = ImRaii.Table("Quest", 3, ImGuiTableFlags.NoSavedSettings);
             if (!table)
                 return;
 
-            ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.NoHide);
-            ImGui.TableSetupColumn("Supported", ImGuiTableColumnFlags.WidthFixed, 120 * ImGui.GetIO().FontGlobalScale);
-            ImGui.TableSetupColumn("Completed", ImGuiTableColumnFlags.WidthFixed, 120 * ImGui.GetIO().FontGlobalScale);
+            ImGui.TableSetupColumn("名稱", ImGuiTableColumnFlags.NoHide);
+            ImGui.TableSetupColumn("支援狀態", ImGuiTableColumnFlags.WidthFixed, 120 * ImGui.GetIO().FontGlobalScale);
+            ImGui.TableSetupColumn("已完成", ImGuiTableColumnFlags.WidthFixed, 120 * ImGui.GetIO().FontGlobalScale);
             ImGui.TableHeadersRow();
 
             foreach (var section in _filteredSections)
                 DrawSection(section);
         }
         else
-            ImGui.Text("No quest or category matches your search.");
+            ImGui.Text("找不到符合搜尋條件的任務或分類。");
     }
 
     private void DrawSection(FilteredSection filter)
@@ -233,7 +233,7 @@ internal sealed class QuestJournalComponent
         if (_questFunctions.IsQuestRemoved(questInfo.QuestId))
         {
             if (_uiUtils.ChecklistItem(lastChecked, ImGuiColors.DalamudGrey, FontAwesomeIcon.Minus))
-                ImGui.SetTooltip("This quest is not available.");
+                ImGui.SetTooltip("目前無法接取此任務。");
         }
         else if (fate)
         {
@@ -246,12 +246,12 @@ internal sealed class QuestJournalComponent
             if (issues.Any(x => x.Severity == EIssueSeverity.Error))
             {
                 if (_uiUtils.ChecklistItem(lastChecked, ImGuiColors.DalamudRed, FontAwesomeIcon.ExclamationTriangle))
-                    ImGui.SetTooltip("This quest could not be loaded.");
+                    ImGui.SetTooltip("無法載入此任務。");
             }
             else if (issues.Count > 0)
             {
                 if (_uiUtils.ChecklistItem(lastChecked, ImGuiColors.ParsedBlue, FontAwesomeIcon.InfoCircle))
-                    ImGui.SetTooltip("This quest had validation issues.");
+                    ImGui.SetTooltip("此任務有驗證問題。");
             }
             else
                 if (_uiUtils.ChecklistItem(lastChecked, true))

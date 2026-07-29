@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Numerics;
 using Dalamud.Bindings.ImGui;
@@ -253,7 +253,7 @@ internal sealed class CreationUtilsComponent(
         }
         else
         {
-            if (ImGui.Button("Cancel pathfinding"))
+            if (ImGui.Button("取消尋路"))
                 _movementController.ResetPathfinding();
         }
 
@@ -296,7 +296,7 @@ internal sealed class CreationUtilsComponent(
         }
         else
         {
-            return "No active quest";
+            return "目前沒有進行中的任務";
         }
         return $"{q.CurrentQuest} → {q.Sequence} - {qw}";
     }

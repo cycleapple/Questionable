@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
 using Dalamud.Interface.Colors;
@@ -23,7 +23,7 @@ internal sealed class QuestValidationWindow : LWindow
 
     public QuestValidationWindow(QuestValidator questValidator, QuestData questData,
         QuestController questController, IDalamudPluginInterface pluginInterface)
-        : base("Quest Validation###QuestionableValidator")
+        : base("任務驗證###QuestionableValidator")
     {
         _questValidator = questValidator;
         _questData = questData;
@@ -47,11 +47,11 @@ internal sealed class QuestValidationWindow : LWindow
             return;
         }
 
-        ImGui.TableSetupColumn("Quest", ImGuiTableColumnFlags.WidthFixed, 50);
+        ImGui.TableSetupColumn("任務", ImGuiTableColumnFlags.WidthFixed, 50);
         ImGui.TableSetupColumn("", ImGuiTableColumnFlags.WidthFixed, 200);
         ImGui.TableSetupColumn("Seq", ImGuiTableColumnFlags.WidthFixed, 30);
-        ImGui.TableSetupColumn("Step", ImGuiTableColumnFlags.WidthFixed, 30);
-        ImGui.TableSetupColumn("Issue", ImGuiTableColumnFlags.None, 200);
+        ImGui.TableSetupColumn("步驟", ImGuiTableColumnFlags.WidthFixed, 30);
+        ImGui.TableSetupColumn("問題", ImGuiTableColumnFlags.None, 200);
         ImGui.TableHeadersRow();
 
         foreach (ValidationIssue validationIssue in _questValidator.Issues)
@@ -67,7 +67,7 @@ internal sealed class QuestValidationWindow : LWindow
                     IQuestInfo quest = _questData.GetQuestInfo(validationIssue.ElementId);
                     bool copy = ImGuiComponents.IconButton(FontAwesomeIcon.Copy);
                     if (ImGui.IsItemHovered())
-                        ImGui.SetTooltip("Copy as file name");
+                        ImGui.SetTooltip("複製為檔案名稱");
                     if (copy)
                     {
                         string fileName = $"{quest.QuestId}_{quest.SimplifiedName}.json";
@@ -76,7 +76,7 @@ internal sealed class QuestValidationWindow : LWindow
                     ImGui.SameLine();
                     bool sim = ImGuiComponents.IconButton(FontAwesomeIcon.Play, new System.Numerics.Vector2(16));
                     if (ImGui.IsItemHovered())
-                        ImGui.SetTooltip("Simulate quest");
+                        ImGui.SetTooltip("模擬任務");
                     if (sim)
                     {
                         _questController.SimulateQuest(quest, validationIssue.Sequence ?? 0, 0);

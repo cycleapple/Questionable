@@ -68,12 +68,12 @@ internal sealed class DutyConfigComponent : ConfigComponent
 
     public override void DrawTab()
     {
-        using var tab = ImRaii.TabItem("Duties###Duties");
+        using var tab = ImRaii.TabItem("副本任務###Duties");
         if (!tab)
             return;
 
         bool runInstancedContentWithAutoDuty = Configuration.Duties.RunInstancedContentWithAutoDuty;
-        if (ImGui.Checkbox("Run instanced content with AutoDuty and BossMod", ref runInstancedContentWithAutoDuty))
+        if (ImGui.Checkbox("使用 AutoDuty 與 BossMod 執行副本", ref runInstancedContentWithAutoDuty))
         {
             Configuration.Duties.RunInstancedContentWithAutoDuty = runInstancedContentWithAutoDuty;
             Save();
@@ -88,16 +88,16 @@ internal sealed class DutyConfigComponent : ConfigComponent
         using (ImRaii.Disabled(!runInstancedContentWithAutoDuty))
         {
             ImGui.Text(
-                "Questionable includes a default list of duties that work if AutoDuty and BossMod are installed.");
+                "Questionable 內建一份可搭配 AutoDuty 與 BossMod 使用的副本清單。");
 
             ImGui.Text(
-                "The included list of duties can change with each update, and is based on the following spreadsheet:");
-            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.GlobeEurope, "Open AutoDuty spreadsheet"))
+                "內建副本清單可能隨更新調整，其依據為下列試算表：");
+            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.GlobeEurope, "開啟 AutoDuty 試算表"))
                 Util.OpenLink(
                     "https://docs.google.com/spreadsheets/d/151RlpqRcCpiD_VbQn6Duf-u-S71EP7d0mx3j1PDNoNA/edit?pli=1#gid=0");
 
             ImGui.Separator();
-            ImGui.Text("You can override the settings for each individual dungeon/trial:");
+            ImGui.Text("你可以個別覆寫每個迷宮／討伐殲滅戰的設定：");
 
             DrawConfigTable(runInstancedContentWithAutoDuty);
 
@@ -140,8 +140,8 @@ internal sealed class DutyConfigComponent : ConfigComponent
                 using var table = ImRaii.Table($"Duties{expansion}", 2, ImGuiTableFlags.SizingFixedFit);
                 if (table)
                 {
-                    ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.WidthStretch);
-                    ImGui.TableSetupColumn("Options", ImGuiTableColumnFlags.WidthFixed, 200f);
+                    ImGui.TableSetupColumn("名稱", ImGuiTableColumnFlags.WidthStretch);
+                    ImGui.TableSetupColumn("選項", ImGuiTableColumnFlags.WidthFixed, 200f);
 
                     if (_contentFinderConditionNames.TryGetValue(expansion, out var cfcNames))
                     {
@@ -178,7 +178,7 @@ internal sealed class DutyConfigComponent : ConfigComponent
                                     }
 
                                     if (runInstancedContentWithAutoDuty && !_autoDutyIpc.HasPath(cfcId))
-                                        ImGuiComponents.HelpMarker("This duty is not supported by AutoDuty",
+                                        ImGuiComponents.HelpMarker("AutoDuty 不支援此副本",
                                             FontAwesomeIcon.Times, ImGuiColors.DalamudRed);
                                     else if (dutyOptions.Notes.Count > 0)
                                         DrawNotes(dutyOptions.Enabled, dutyOptions.Notes);
@@ -246,7 +246,7 @@ internal sealed class DutyConfigComponent : ConfigComponent
 
     private void DrawEnableAllButton()
     {
-        if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.CheckCircle, "Enable All"))
+        if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.CheckCircle, "全部啟用"))
         {
             Configuration.Duties.BlacklistedDutyCfcIds.Clear();
             Configuration.Duties.WhitelistedDutyCfcIds.Clear();
@@ -265,7 +265,7 @@ internal sealed class DutyConfigComponent : ConfigComponent
         }
 
         if (ImGui.IsItemHovered())
-            ImGui.SetTooltip("Enable all of the duties, use at your own risk.");
+            ImGui.SetTooltip("啟用所有副本，請自行承擔風險。");
     }
 
     private void DrawClipboardButtons()
@@ -273,7 +273,7 @@ internal sealed class DutyConfigComponent : ConfigComponent
         using (ImRaii.Disabled(Configuration.Duties.WhitelistedDutyCfcIds.Count +
                    Configuration.Duties.BlacklistedDutyCfcIds.Count == 0))
         {
-            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Copy, "Export to clipboard"))
+            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Copy, "匯出至剪貼簿"))
             {
                 var whitelisted =
                     Configuration.Duties.WhitelistedDutyCfcIds.Select(x => $"{DutyWhitelistPrefix}{x}");
@@ -291,7 +291,7 @@ internal sealed class DutyConfigComponent : ConfigComponent
         using (ImRaii.Disabled(string.IsNullOrEmpty(clipboardText) ||
                                !clipboardText.StartsWith(DutyClipboardPrefix, StringComparison.InvariantCulture)))
         {
-            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Paste, "Import from Clipboard"))
+            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Paste, "從剪貼簿匯入"))
             {
                 clipboardText = clipboardText.Substring(DutyClipboardPrefix.Length);
                 string text = Encoding.UTF8.GetString(Convert.FromBase64String(clipboardText));
@@ -318,7 +318,7 @@ internal sealed class DutyConfigComponent : ConfigComponent
     {
         using (ImRaii.Disabled(!ImGui.IsKeyDown(ImGuiKey.ModCtrl)))
         {
-            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Undo, "Reset to default"))
+            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Undo, "重設為預設值"))
             {
                 Configuration.Duties.WhitelistedDutyCfcIds.Clear();
                 Configuration.Duties.BlacklistedDutyCfcIds.Clear();
@@ -327,7 +327,7 @@ internal sealed class DutyConfigComponent : ConfigComponent
         }
 
         if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
-            ImGui.SetTooltip("Hold CTRL to enable this button.");
+            ImGui.SetTooltip("按住 Ctrl 即可使用此按鈕。");
     }
 
     private sealed record DutyInfo(uint CfcId, uint TerritoryId, string Name);

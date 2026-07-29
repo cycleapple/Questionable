@@ -1,12 +1,12 @@
 ﻿{
   "Name": "Questionable",
   "Author": "liza, qstxiv, & various contributors",
-  "Punchline": "A tiny quest helper plugin.",
-  "Description": "A tiny little quest helper plugin, which does quests for you automatically where possible. Uses navmesh to automatically walk to all quest waypoints, and tries to automatically complete all steps along the way (excluding dungeons, single player duties and combat).\n\nNot all quests are supported, check the discord or git repository for an up-to-date list.\n\nRequired Plugins: vnavmesh, TextAdvance, Lifestream",
+  "Punchline": "自動化任務助手。",
+  "Description": "在可行的情況下自動執行任務，使用 vnavmesh 前往任務目標，並嘗試完成沿途步驟（不包含一般副本、單人任務及戰鬥）。\n\n並非所有任務皆受支援，請至 Discord 或 GitHub 查看最新清單。\n\n必要插件：vnavmesh、TextAdvance、Lifestream",
   "Tags": [
     "quests",
     "msq"
   ],
-  "RepoUrl": "https://github.com/PunishXIV/Questionable",
+  "RepoUrl": "https://github.com/cycleapple/Questionable",
   "IconUrl": "https://qstxiv.github.io/icons/Questionable.png"
 }

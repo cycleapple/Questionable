@@ -17,7 +17,7 @@ internal sealed class DebugConfigComponent : ConfigComponent
 
     public override void DrawTab()
     {
-        using var tab = ImRaii.TabItem("Advanced###Debug");
+        using var tab = ImRaii.TabItem("進階###Debug");
         if (!tab)
             return;
 

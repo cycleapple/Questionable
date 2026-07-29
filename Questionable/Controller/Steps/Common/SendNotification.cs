@@ -50,10 +50,10 @@ internal static class SendNotification
 
             string text = Task.InteractionType switch
             {
-                EInteractionType.Duty => "Duty",
-                EInteractionType.SinglePlayerDuty => "Single player duty",
+                EInteractionType.Duty => "副本任務",
+                EInteractionType.SinglePlayerDuty => "單人任務",
                 EInteractionType.Instruction or EInteractionType.WaitForManualProgress or EInteractionType.Snipe =>
-                    "Manual interaction required",
+                    "需要手動操作",
                 _ => $"{Task.InteractionType}",
             };
 
