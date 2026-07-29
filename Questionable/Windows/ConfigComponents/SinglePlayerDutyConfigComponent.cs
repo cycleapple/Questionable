@@ -129,9 +129,9 @@ internal sealed class SinglePlayerDutyConfigComponent : ConfigComponent
                 name += $" ({cfcData.Name})";
 
             if (questsWithMultipleBattles.Contains(questId))
-                name += $" (Part {options.Index + 1})";
+                name += $"（第 {options.Index + 1} 部分）";
             else if (cfcData.ContentFinderConditionId is 674 or 691)
-                name += " (Melee/Phys. Ranged)";
+                name += "（近戰／物理遠程）";
 
             var dutyInfo = new SinglePlayerDutyInfo(name, questInfo, cfcData, options, enabled);
 
@@ -266,10 +266,10 @@ internal sealed class SinglePlayerDutyConfigComponent : ConfigComponent
             using (_ = ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudRed))
             {
                 ImGui.TextUnformatted("尚在製作中：");
-                ImGui.BulletText("Will always use BossMod for combat (ignoring the configured combat module).");
+                ImGui.BulletText("戰鬥時一律使用 BossMod（忽略已設定的戰鬥模組）。");
                 ImGui.BulletText("目前僅測試過少部分單人任務戰鬥，其中多數為主線任務。");
-                ImGui.BulletText("When retrying a failed battle, it will always start at 'Normal' difficulty.");
-                ImGui.BulletText("Please don't enable this option when using a BossMod fork (such as Reborn);\nwith the missing combat module configuration, it is unlikely to be compatible.");
+                ImGui.BulletText("重新挑戰失敗的戰鬥時，一律以「普通」難度開始。");
+                ImGui.BulletText("使用 BossMod 分支版本（例如 Reborn）時請勿啟用此選項；\n由於缺少戰鬥模組設定，兩者很可能不相容。");
             }
 
 #if false
@@ -277,7 +277,7 @@ internal sealed class SinglePlayerDutyConfigComponent : ConfigComponent
             {
                 ImGui.Spacing();
                 int retryDifficulty = Configuration.SinglePlayerDuties.RetryDifficulty;
-                if (ImGui.Combo("Difficulty when retrying a quest battle", ref retryDifficulty, _retryDifficulties,
+                if (ImGui.Combo("重新挑戰任務戰鬥時的難度", ref retryDifficulty, _retryDifficulties,
                         _retryDifficulties.Length))
                 {
                     Configuration.SinglePlayerDuties.RetryDifficulty = (byte)retryDifficulty;
@@ -292,7 +292,7 @@ internal sealed class SinglePlayerDutyConfigComponent : ConfigComponent
         using (ImRaii.Disabled(!runSoloInstancesWithBossMod))
         {
             ImGui.Text(
-                "Questionable includes a default list of quest battles that work if BossMod is installed.");
+                "Questionable 內建一份可在安裝 BossMod 後執行的任務戰鬥清單。");
             ImGui.Text("內建的單人任務戰鬥清單可能隨更新調整。");
 
             ImGui.Separator();
@@ -625,7 +625,7 @@ internal sealed class SinglePlayerDutyConfigComponent : ConfigComponent
 
                     if (!dutyInfo.Enabled)
                     {
-                        ImGuiComponents.HelpMarker("Questionable doesn't include support for this quest.",
+                        ImGuiComponents.HelpMarker("Questionable 尚未支援此任務。",
                             FontAwesomeIcon.Times, ImGuiColors.DalamudRed);
                     }
                     else if (dutyInfo.Notes.Count > 0)

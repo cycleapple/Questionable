@@ -22,12 +22,12 @@ internal sealed class DebugConfigComponent : ConfigComponent
             return;
 
         ImGui.TextColored(ImGuiColors.DalamudRed,
-            "Enabling any option here may cause unexpected behavior. Use at your own risk.");
+            "啟用此處的任何選項都可能造成非預期行為，請自行承擔風險。");
 
         ImGui.Separator();
 
         bool debugOverlay = Configuration.Advanced.DebugOverlay;
-        if (ImGui.Checkbox("Enable debug overlay", ref debugOverlay))
+        if (ImGui.Checkbox("啟用偵錯覆蓋層", ref debugOverlay))
         {
             Configuration.Advanced.DebugOverlay = debugOverlay;
             Save();
@@ -38,7 +38,7 @@ internal sealed class DebugConfigComponent : ConfigComponent
             using (ImRaii.PushIndent())
             {
                 bool combatDataOverlay = Configuration.Advanced.CombatDataOverlay;
-                if (ImGui.Checkbox("Enable combat data overlay", ref combatDataOverlay))
+                if (ImGui.Checkbox("啟用戰鬥資料覆蓋層", ref combatDataOverlay))
                 {
                     Configuration.Advanced.CombatDataOverlay = combatDataOverlay;
                     Save();
@@ -47,7 +47,7 @@ internal sealed class DebugConfigComponent : ConfigComponent
         }
 
         bool highlightNpc = Configuration.Advanced.HighlightSelectedNpc;
-        if (ImGui.Checkbox("Highlight NPCs related to the current quest sequence", ref highlightNpc))
+        if (ImGui.Checkbox("標示與目前任務階段相關的 NPC", ref highlightNpc))
         {
             Configuration.Advanced.HighlightSelectedNpc = highlightNpc;
             Save();
@@ -61,7 +61,7 @@ internal sealed class DebugConfigComponent : ConfigComponent
                 var highlightColorValues = Enum.GetValues<ObjectHighlightColor>();
                 var selectedHighlightColor = Array.IndexOf(highlightColorValues, Configuration.Advanced.HighlightColor);
                 ImGui.SetNextItemWidth(150f);
-                if (ImGui.Combo("Highlight Color", ref selectedHighlightColor, highlightColorNames, highlightColorNames.Length))
+                if (ImGui.Combo("標示顏色", ref selectedHighlightColor, highlightColorNames, highlightColorNames.Length))
                 {
                     Configuration.Advanced.HighlightColor = (ObjectHighlightColor)selectedHighlightColor;
                     Save();
@@ -70,14 +70,14 @@ internal sealed class DebugConfigComponent : ConfigComponent
         }
 
         bool neverFly = Configuration.Advanced.NeverFly;
-        if (ImGui.Checkbox("Disable flying (even if unlocked for the zone)", ref neverFly))
+        if (ImGui.Checkbox("停用飛行（即使該區域已解鎖飛行）", ref neverFly))
         {
             Configuration.Advanced.NeverFly = neverFly;
             Save();
         }
 
         bool additionalStatusInformation = Configuration.Advanced.AdditionalStatusInformation;
-        if (ImGui.Checkbox("Draw additional status information", ref additionalStatusInformation))
+        if (ImGui.Checkbox("顯示額外狀態資訊", ref additionalStatusInformation))
         {
             Configuration.Advanced.AdditionalStatusInformation = additionalStatusInformation;
             Save();
@@ -93,27 +93,27 @@ internal sealed class DebugConfigComponent : ConfigComponent
             using (ImRaii.PushIndent())
             {
                 ImGui.AlignTextToFramePadding();
-                if (ImGui.Checkbox("Show Tracked Quests", ref showTracked))
+                if (ImGui.Checkbox("顯示追蹤中的任務", ref showTracked))
                 {
                     Configuration.Advanced.ShowTracked = showTracked;
                     Save();
                 }
-                if (ImGui.Checkbox("Show Accepted/Complete Daily Quests", ref showDailies))
+                if (ImGui.Checkbox("顯示已接取／已完成的每日任務", ref showDailies))
                 {
                     Configuration.Advanced.ShowDailies = showDailies;
                     Save();
                 }
-                if (ImGui.Checkbox("Show Director info", ref showDirector))
+                if (ImGui.Checkbox("顯示 Director 資訊", ref showDirector))
                 {
                     Configuration.Advanced.ShowDirector = showDirector;
                     Save();
                 }
-                if (ImGui.Checkbox("Show Action Manager", ref showActionManager))
+                if (ImGui.Checkbox("顯示 Action Manager", ref showActionManager))
                 {
                     Configuration.Advanced.ShowActionManager = showActionManager;
                     Save();
                 }
-                if (ImGui.Checkbox("Show NG+ Chapter", ref showNewGamePlus))
+                if (ImGui.Checkbox("顯示「新生冒險錄」章節", ref showNewGamePlus))
                 {
                     Configuration.Advanced.ShowNewGamePlus = showNewGamePlus;
                     Save();
@@ -123,12 +123,12 @@ internal sealed class DebugConfigComponent : ConfigComponent
 
         ImGui.Separator();
 
-        ImGui.Text("AutoDuty Settings");
+        ImGui.Text("AutoDuty 設定");
         using (ImRaii.PushIndent())
         {
             ImGui.AlignTextToFramePadding();
             bool disableAutoDutyBareMode = Configuration.Advanced.DisableAutoDutyBareMode;
-            if (ImGui.Checkbox("Use Pre-Loop/Loop/Post-Loop settings", ref disableAutoDutyBareMode))
+            if (ImGui.Checkbox("使用循環前／循環／循環後設定", ref disableAutoDutyBareMode))
             {
                 Configuration.Advanced.DisableAutoDutyBareMode = disableAutoDutyBareMode;
                 Save();
@@ -136,103 +136,103 @@ internal sealed class DebugConfigComponent : ConfigComponent
 
             ImGui.SameLine();
             ImGuiComponents.HelpMarker(
-                "Typically, the loop settings for AutoDuty are disabled when running dungeons with Questionable, since they can cause issues (or even shut down your PC).");
+                "Questionable 執行副本時通常會停用 AutoDuty 的循環設定，因為這些設定可能造成問題（甚至使電腦關機）。");
         }
 
         ImGui.Separator();
-        ImGui.Text("Quest/Interaction Skips");
+        ImGui.Text("略過任務／互動");
         using (ImRaii.PushIndent())
         {
             bool skipAetherCurrents = Configuration.Advanced.SkipAetherCurrents;
-            if (ImGui.Checkbox("Don't pick up aether currents/aether current quests", ref skipAetherCurrents))
+            if (ImGui.Checkbox("不接取風脈泉／風脈泉任務", ref skipAetherCurrents))
             {
                 Configuration.Advanced.SkipAetherCurrents = skipAetherCurrents;
                 Save();
             }
 
             ImGui.SameLine();
-            ImGuiComponents.HelpMarker("If not done during the MSQ by Questionable, you have to manually pick up any missed aether currents/quests. There is no way to automatically pick up all missing aether currents.");
+            ImGuiComponents.HelpMarker("若 Questionable 未在主線任務途中完成，你必須手動取得遺漏的風脈泉或任務；目前沒有自動補齊所有風脈泉的方法。");
 
             bool skipClassJobQuests = Configuration.Advanced.SkipClassJobQuests;
-            if (ImGui.Checkbox("Don't pick up class/job/role quests", ref skipClassJobQuests))
+            if (ImGui.Checkbox("不接取職業／特職／職能任務", ref skipClassJobQuests))
             {
                 Configuration.Advanced.SkipClassJobQuests = skipClassJobQuests;
                 Save();
             }
 
             ImGui.SameLine();
-            ImGuiComponents.HelpMarker("Class and job skills for A Realm Reborn, Heavensward and (for the Lv70 skills) Stormblood are locked behind quests. Not recommended if you plan on queueing for instances with duty finder/party finder.");
+            ImGuiComponents.HelpMarker("「重生之境」、「蒼穹之禁城」及「紅蓮之狂潮」的部分技能（含 70 級技能）需完成職業任務才能解鎖。若打算使用任務搜索器或招募隊員參加副本，不建議啟用。");
 
             bool skipARealmRebornHardModePrimals = Configuration.Advanced.SkipARealmRebornHardModePrimals;
-            if (ImGui.Checkbox("Don't pick up ARR hard mode primal quests", ref skipARealmRebornHardModePrimals))
+            if (ImGui.Checkbox("不接取 2.0 高難度蠻神任務", ref skipARealmRebornHardModePrimals))
             {
                 Configuration.Advanced.SkipARealmRebornHardModePrimals = skipARealmRebornHardModePrimals;
                 Save();
             }
 
             ImGui.SameLine();
-            ImGuiComponents.HelpMarker("Hard mode Ifrit/Garuda/Titan are required for the Patch 2.5 quest 'Good Intentions' and to start Heavensward.");
+            ImGuiComponents.HelpMarker("完成高難度伊弗利特、迦樓羅與泰坦是進行 2.5 任務及開始「蒼穹之禁城」的必要條件。");
 
             bool skipCrystalTowerRaids = Configuration.Advanced.SkipCrystalTowerRaids;
-            if (ImGui.Checkbox("Don't pick up Crystal Tower quests", ref skipCrystalTowerRaids))
+            if (ImGui.Checkbox("不接取水晶塔任務", ref skipCrystalTowerRaids))
             {
                 Configuration.Advanced.SkipCrystalTowerRaids = skipCrystalTowerRaids;
                 Save();
             }
 
             ImGui.SameLine();
-            ImGuiComponents.HelpMarker("Crystal Tower raids are required for the Patch 2.55 quest 'A Time to Every Purpose' and to start Heavensward.");
+            ImGuiComponents.HelpMarker("完成水晶塔團隊任務是進行 2.55 任務及開始「蒼穹之禁城」的必要條件。");
 
             bool preventQuestCompletion = Configuration.Advanced.PreventQuestCompletion;
-            if (ImGui.Checkbox("Prevent quest completion", ref preventQuestCompletion))
+            if (ImGui.Checkbox("防止完成任務", ref preventQuestCompletion))
             {
                 Configuration.Advanced.PreventQuestCompletion = preventQuestCompletion;
                 Save();
             }
 
             ImGui.SameLine();
-            ImGuiComponents.HelpMarker("When enabled, Questionable will not attempt to turn-in and complete quests. This will do everything automatically except the final turn-in step.");
+            ImGuiComponents.HelpMarker("啟用後，Questionable 不會繳交並完成任務；除最後的交付步驟外，其餘流程仍會自動執行。");
 
             bool namazuPreferCraft = Configuration.Advanced.NamazuPreferCraft;
-            if (ImGui.Checkbox("Namazu: prefer Crafting job over Gatherer", ref namazuPreferCraft))
+            if (ImGui.Checkbox("鯰魚族：優先使用能工巧匠而非大地使者", ref namazuPreferCraft))
             {
                 Configuration.Advanced.NamazuPreferCraft = namazuPreferCraft;
                 Save();
             }
 
             ImGui.SameLine();
-            ImGuiComponents.HelpMarker("Namazu tribe quests can be done as either DoH or DoL, this lets you set that preference.");
+            ImGuiComponents.HelpMarker("鯰魚族友好部族任務可由能工巧匠或大地使者完成，此選項用來設定偏好。");
 
             bool showWindowOnStart = Configuration.Advanced.ShowWindowOnStart;
-            if (ImGui.Checkbox("Show window on start", ref showWindowOnStart))
+            if (ImGui.Checkbox("啟動時顯示視窗", ref showWindowOnStart))
             {
                 Configuration.Advanced.ShowWindowOnStart = showWindowOnStart;
                 Save();
             }
 
             ImGui.SameLine();
-            ImGuiComponents.HelpMarker("When enabled, Questionable's progress window will show when the plugin is loaded.");
+            ImGuiComponents.HelpMarker("啟用後，載入插件時會顯示 Questionable 的進度視窗。");
 
             bool startMinimized = Configuration.Advanced.StartMinimized;
-            if (ImGui.Checkbox("Start minimized", ref startMinimized))
+            if (ImGui.Checkbox("啟動時最小化", ref startMinimized))
             {
                 Configuration.Advanced.StartMinimized = startMinimized;
                 Save();
             }
 
             ImGui.SameLine();
-            ImGuiComponents.HelpMarker("When enabled, Questionable's progress window will be in its minimized state when loaded.");
+            ImGuiComponents.HelpMarker("啟用後，Questionable 的進度視窗會以最小化狀態載入。");
 
             #if DEBUG
             bool openEditor = Configuration.Advanced.OpenEditor;
-            if (ImGui.Checkbox("Open editor when starting quest", ref openEditor))
+            if (ImGui.Checkbox("開始任務時開啟編輯器", ref openEditor))
             {
                 Configuration.Advanced.OpenEditor = openEditor;
                 Save();
             }
 
             ImGui.SameLine();
-            ImGuiComponents.HelpMarker("When enabled, Questionable will open the path for the current quest in your default text editor.");
+            ImGuiComponents.HelpMarker("啟用後，Questionable 會以預設文字編輯器開啟目前任務的路徑檔案。");
             #endif
         }
     }

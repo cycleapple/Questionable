@@ -81,7 +81,7 @@ internal sealed class DutyConfigComponent : ConfigComponent
 
         ImGui.SameLine();
         ImGuiComponents.HelpMarker(
-            "The combat module used for this is configured by AutoDuty, ignoring whichever selection you've made in Questionable's \"General\" configuration.");
+            "此功能使用的戰鬥模組由 AutoDuty 設定，不會採用 Questionable「一般」設定中選擇的戰鬥模組。");
 
         ImGui.Separator();
 

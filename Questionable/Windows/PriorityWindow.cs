@@ -68,21 +68,21 @@ internal sealed class PriorityWindow : LWindow
     public override void DrawContent()
     {
 
-        if (ImGui.CollapsingHeader("Explanation"))
+        if (ImGui.CollapsingHeader("說明"))
         {
             ImGui.TextWrapped(
-                "Questionable will generally try to do:");
-            ImGui.BulletText("Priority quests added below, in order");
-            ImGui.BulletText("'Priority' quests: class quests, ARR primals, ARR raids");
+                "Questionable 通常會依照以下順序執行：");
+            ImGui.BulletText("下方手動加入的優先任務（依排列順序）");
+            ImGui.BulletText("系統判定的「優先」任務：職業任務、2.0 蠻神與團隊任務");
             ImGui.BulletText(
-                "Supported quests in your 'To-Do list'\n(quests from your Quest Journal that are always on-screen)");
-            ImGui.BulletText("MSQ quest (if available, unless it is marked as 'ignored'\nin your Journal)");
+                "「待辦清單」中支援的任務\n（任務情報中固定顯示於畫面的任務）");
+            ImGui.BulletText("主線任務（若有，且未在任務日誌中標記為「忽略」）");
             ImGui.TextWrapped(
-                "If you don't have any active MSQ quest and there is no Priority Quest added here, it will always try to pick up the next quest in the MSQ first.");
+                "若目前沒有進行中的主線任務，且此處也未加入優先任務，Questionable 會優先接取下一個主線任務。");
         }
         ImGui.Separator();
         ImGui.Spacing();
-        ImGui.Text("Quests to do first:");
+        ImGui.Text("優先執行的任務：");
         _questSelector.DrawSelection();
         DrawQuestList();
 
@@ -95,7 +95,7 @@ internal sealed class PriorityWindow : LWindow
         ImGui.BeginDisabled(_questController.ManualPriorityQuests.Count == 0);
         if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Upload, "匯出至剪貼簿"))
             ExportToClipboard();
-        if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Check, "Remove finished Quests"))
+        if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Check, "移除已完成任務"))
             _questController.ManualPriorityQuests.RemoveAll(q => _questFunctions.IsQuestComplete(q.Id));
         ImGui.SameLine();
 
@@ -275,7 +275,7 @@ internal sealed class PriorityWindow : LWindow
     {
         string clipboardText = EncodeQuestPriority();
         ImGui.SetClipboardText(clipboardText);
-        _chatGui.Print("Copied quests to clipboard.", CommandHandler.MessageTag, CommandHandler.TagColor);
+        _chatGui.Print("已將任務清單複製到剪貼簿。", CommandHandler.MessageTag, CommandHandler.TagColor);
     }
 
     private void ImportFromClipboard(List<ElementId> questElements)

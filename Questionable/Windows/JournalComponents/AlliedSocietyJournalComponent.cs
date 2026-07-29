@@ -65,7 +65,7 @@ internal sealed class AlliedSocietyJournalComponent
 
         unsafe {
             uint allowances = QuestManager.Instance()->GetBeastTribeAllowance();
-            ImGui.Text($"Remaining: {allowances}/12");
+            ImGui.Text($"剩餘額度：{allowances}/12");
         }
 
         foreach (EAlliedSociety alliedSociety in Enum.GetValues<EAlliedSociety>().Where(x => x != EAlliedSociety.None))

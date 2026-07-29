@@ -182,7 +182,7 @@ internal sealed partial class ActiveQuestComponent
 
                     if (ImGui.IsItemHovered())
                         ImGui.SetTooltip(
-                            "This quest is loaded from your 'pluginConfigs\\Questionable\\Quests' directory.\nThis gets loaded even if Questionable ships with a newer/different version of the quest.");
+                            "此任務由你的「pluginConfigs\\Questionable\\Quests」資料夾載入。\n即使 Questionable 內附較新或不同版本的任務資料，仍會優先載入此檔案。");
                 }
 
                 ImGui.TextUnformatted(

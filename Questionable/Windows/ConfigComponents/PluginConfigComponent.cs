@@ -163,7 +163,7 @@ internal sealed class PluginConfigComponent : ConfigComponent
             ImGui.TextColored(ImGuiColors.ParsedGreen, "所有必要插件均已安裝。");
         else
             ImGui.TextColored(ImGuiColors.DalamudRed,
-                "Required plugins are missing, Questionable will not work properly.");
+                "缺少必要插件，Questionable 將無法正常運作。");
     }
 
     public void Draw(out bool allRequiredInstalled)

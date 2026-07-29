@@ -57,15 +57,16 @@ internal sealed class QuestJournalComponent
         if (!tab)
             return;
 
-        if (ImGui.CollapsingHeader("Explanation"))
+        if (ImGui.CollapsingHeader("說明"))
         {
-            ImGui.Text("The list below contains all quests that appear in your journal.");
-            ImGui.BulletText("'Supported' lists quests that Questionable can do for you");
-            ImGui.BulletText("'Completed' lists quests your current character has completed.");
+            ImGui.Text("下方清單包含任務日誌中的所有任務。");
+            ImGui.BulletText("「支援」表示 Questionable 可以代為執行的任務");
+            ImGui.BulletText("「已完成」表示目前角色已完成的任務");
             ImGui.BulletText(
-                "Not all quests can be completed even if they're listed as available, e.g. starting city quest chains.");
-            ImGui.BulletText("The text in the Supported column indicates the last time a quest path was reported to work perfectly.");
-            ImGui.TextColoredWrapped(ImGuiColors.DalamudYellow, "Quests can be added to Priority Quests, either individually or by group, with the right click menu.");
+                "即使任務顯示為可接取，也不代表一定能完成，例如不同起始城市的任務線。");
+            ImGui.BulletText("「支援」欄位中的文字表示該任務路徑最後一次回報為正常運作的時間。");
+            ImGui.TextColoredWrapped(ImGuiColors.DalamudYellow,
+                "可透過右鍵選單，將單一任務或整組任務加入優先任務。");
 
             ImGui.Spacing();
             ImGui.Separator();
@@ -76,7 +77,7 @@ internal sealed class QuestJournalComponent
 
         ImGui.SameLine();
         ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X);
-        if (ImGui.InputTextWithHint(string.Empty, "Search quests and categories", ref Filter.SearchText, 256))
+        if (ImGui.InputTextWithHint(string.Empty, "搜尋任務與分類", ref Filter.SearchText, 256))
             UpdateFilter();
 
         if (_filteredSections.Count > 0)
@@ -192,7 +193,7 @@ internal sealed class QuestJournalComponent
         {
             if (quest.Root.LastChecked.Date != null)
             {
-                lastCheckedLong = $"\nLast checked: {quest.Root.LastChecked}";
+                lastCheckedLong = $"\n最後確認：{quest.Root.LastChecked}";
                 var since = (int)quest.Root.LastChecked.Since(DateTime.Now)!.Value.TotalDays;
                 if (since < 7)
                     lastChecked = $"{since}d";
