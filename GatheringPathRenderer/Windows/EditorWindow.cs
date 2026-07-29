@@ -45,7 +45,7 @@ internal sealed class EditorWindow : Window
 
     public EditorWindow(RendererPlugin plugin, EditorCommands editorCommands, IDataManager dataManager, ICommandManager commandManager,
         ITargetManager targetManager, IClientState clientState, IObjectTable objectTable, ConfigWindow configWindow)
-        : base($"Gathering Path Editor {typeof(EditorWindow).Assembly.GetName().Version!.ToString(2)}###QuestionableGatheringPathEditor",
+        : base($"採集路線編輯器 {typeof(EditorWindow).Assembly.GetName().Version!.ToString(2)}###QuestionableGatheringPathEditor",
             ImGuiWindowFlags.NoFocusOnAppearing | ImGuiWindowFlags.NoNavFocus | ImGuiWindowFlags.AlwaysVerticalScrollbar)
     {
         _plugin = plugin;
@@ -70,7 +70,7 @@ internal sealed class EditorWindow : Window
             ShowTooltip = () =>
             {
                 ImGui.BeginTooltip();
-                ImGui.Text("Open Configuration");
+                    ImGui.Text("開啟設定");
                 ImGui.EndTooltip();
             }
         });
@@ -167,7 +167,7 @@ internal sealed class EditorWindow : Window
 
             int minAngle = locationOverride.MinimumAngle ?? location.MinimumAngle.GetValueOrDefault();
             int maxAngle = locationOverride.MaximumAngle ?? location.MaximumAngle.GetValueOrDefault();
-            if (ImGui.DragIntRange2("Angle", ref minAngle, ref maxAngle, 5, -360, 360))
+            if (ImGui.DragIntRange2("角度", ref minAngle, ref maxAngle, 5, -360, 360))
             {
                 locationOverride.MinimumAngle = minAngle;
                 if (minAngle >= maxAngle) maxAngle = 360;
@@ -176,7 +176,7 @@ internal sealed class EditorWindow : Window
 
             float minDistance = locationOverride.MinimumDistance ?? location.CalculateMinimumDistance();
             float maxDistance = locationOverride.MaximumDistance ?? location.CalculateMaximumDistance();
-            if (ImGui.DragFloatRange2("Distance", ref minDistance, ref maxDistance, 0.1f, 1f, 3f))
+            if (ImGui.DragFloatRange2("距離", ref minDistance, ref maxDistance, 0.1f, 1f, 3f))
             {
                 locationOverride.MinimumDistance = minDistance;
                 locationOverride.MaximumDistance = maxDistance;
@@ -193,7 +193,7 @@ internal sealed class EditorWindow : Window
             ImGui.BeginDisabled(!unsaved);
             if (unsaved)
                 ImGui.PushStyleColor(ImGuiCol.Button, ImGuiColors.DalamudRed);
-            if (ImGui.Button("Save"))
+            if (ImGui.Button("儲存"))
             {
                 if (locationOverride is { MinimumAngle: not null, MaximumAngle: not null })
                 {
@@ -214,7 +214,7 @@ internal sealed class EditorWindow : Window
                 ImGui.PopStyleColor();
 
             ImGui.SameLine();
-            if (ImGui.Button("Reset"))
+            if (ImGui.Button("重設"))
             {
                 _changes[location.InternalId] = new LocationOverride();
             }
@@ -226,7 +226,7 @@ internal sealed class EditorWindow : Window
             List<IGameObject> missingLocations = [.. nodesInObjectTable.Where(x => !node.Locations.Any(y => Vector3.Distance(x.Position, y.Position) < 0.1f))];
             if (missingLocations.Count > 0)
             {
-                if (ImGui.Button("Add missing locations"))
+            if (ImGui.Button("新增缺少的位置"))
                 {
                     foreach (var missing in missingLocations)
                         _editorCommands.AddToExistingGroup(context.Root, missing);
@@ -248,7 +248,7 @@ internal sealed class EditorWindow : Window
                 var targetFile = location.File;
                 var root = location.Root;
 
-                if (ImGui.Button("Add to closest group"))
+            if (ImGui.Button("加入最近的群組"))
                 {
                     _editorCommands.AddToExistingGroup(root, _target);
                     _plugin.Save(targetFile, root);
@@ -256,7 +256,7 @@ internal sealed class EditorWindow : Window
 
                 ImGui.BeginDisabled(root.Groups.Any(group => group.Nodes.Any(node => node.DataId == _target.DataId)));
                 ImGui.SameLine();
-                if (ImGui.Button("Add as new group"))
+            if (ImGui.Button("新增為群組"))
                 {
                     _editorCommands.AddToNewGroup(root, _target);
                     _plugin.Save(targetFile, root);
@@ -266,14 +266,14 @@ internal sealed class EditorWindow : Window
             }
             else
             {
-                if (ImGui.Button($"Create location ({gatheringPoint.Value.GatheringPointBase.RowId})"))
+            if (ImGui.Button($"建立位置（{gatheringPoint.Value.GatheringPointBase.RowId}）"))
                 {
                     var (targetFile, root) = _editorCommands.CreateNewFile(gatheringPoint.Value, _target);
                     _plugin.Save(targetFile, root);
                 }
             }
         }
-        if (_clientState.TerritoryType != 0 && _objectTable[0] != null && ImGui.CollapsingHeader("Unadded nodes"))
+        if (_clientState.TerritoryType != 0 && _objectTable[0] != null && ImGui.CollapsingHeader("尚未加入的採集點"))
             ListLocationsInCurrentTerritory();
     }
 
@@ -298,19 +298,19 @@ internal sealed class EditorWindow : Window
         if (ImGuiComponents.IconButton(compact ? FontAwesomeIcon.Expand : FontAwesomeIcon.Compress))
             compact = !compact;
         if (ImGui.IsItemHovered())
-            ImGui.SetTooltip("compact");
+        ImGui.SetTooltip("精簡");
 
         ImGui.SameLine();
         if (ImGuiComponents.IconButton(_plugin.DistantRange ? FontAwesomeIcon.Binoculars : FontAwesomeIcon.Eye))
             _plugin.DistantRange = !_plugin.DistantRange;
         if (ImGui.IsItemHovered())
-            ImGui.SetTooltip("distant");
+        ImGui.SetTooltip("遠距");
 
         ImGui.SameLine();
         if (ImGuiComponents.IconButton(sortByDistance ? FontAwesomeIcon.SortNumericUp : FontAwesomeIcon.SortAlphaDown))
             sortByDistance = !sortByDistance;
         if (ImGui.IsItemHovered())
-            ImGui.SetTooltip("sort by distance/class");
+        ImGui.SetTooltip("依距離／職業排序");
 
         ImGui.SameLine();
         var filterClassIcon = FontAwesomeIcon.Notdef;
@@ -321,15 +321,15 @@ internal sealed class EditorWindow : Window
             filterClass = (FilterClass)(((int)filterClass + 1) % Enum.GetValues(typeof(FilterClass)).Length);
         }
         if (ImGui.IsItemHovered())
-            ImGui.SetTooltip("filter none/min/btn");
+        ImGui.SetTooltip("篩選：全部／採礦工／園藝工");
 
         ImGui.SameLine();
         if (ImGuiComponents.IconButton(showAll ? FontAwesomeIcon.Eye : FontAwesomeIcon.EyeSlash))
             showAll = !showAll;
         if (ImGui.IsItemHovered())
-            ImGui.SetTooltip("show nodes inc added");
+        ImGui.SetTooltip("顯示採集點（包含已加入）");
 
-        ImGui.Text($"Nodes in {_clientState.TerritoryType}: ({count})");
+        ImGui.Text($"區域 {_clientState.TerritoryType} 的採集點：（{count}）");
         List<string> seen = [];
         count = 0;
         Dictionary<uint, Tuple<string, string, bool, float, bool>> output = [];
@@ -411,7 +411,7 @@ internal sealed class EditorWindow : Window
         }
         else
         {
-            ImGui.Text($"No (unadded) results. [pinned {(unaddedVisible ? 'y' : 'n')}]");
+        ImGui.Text($"沒有尚未加入的結果。[固定 {(unaddedVisible ? 'y' : 'n')}]");
             if (ImGui.IsItemClicked()) unaddedVisible = !unaddedVisible;
         }
     }

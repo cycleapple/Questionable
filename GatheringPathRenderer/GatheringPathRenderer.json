@@ -1,7 +1,7 @@
 {
   "Name": "GatheringPathRenderer",
   "Author": "alydev",
-  "Punchline": "[Questionable dev plugin]: Renders gathering location.",
-  "Description": "[Questionable dev plugin]: Renders gathering location using Pictomancy.",
+  "Punchline": "Questionable 開發工具：繪製採集位置。",
+  "Description": "使用 Pictomancy 繪製並編輯 Questionable 的採集位置。",
   "RepoUrl": "https://github.com/cycleapple/Questionable/tree/api13-tw/GatheringPathRenderer"
 }

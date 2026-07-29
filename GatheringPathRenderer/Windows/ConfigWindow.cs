@@ -10,7 +10,7 @@ internal sealed class ConfigWindow : Window
     private readonly Configuration _configuration;
 
     public ConfigWindow(IDalamudPluginInterface pluginInterface, Configuration configuration)
-        : base("Gathering Path Config", ImGuiWindowFlags.AlwaysAutoResize)
+        : base("採集路線設定", ImGuiWindowFlags.AlwaysAutoResize)
     {
         _pluginInterface = pluginInterface;
         _configuration = configuration;
@@ -22,7 +22,7 @@ internal sealed class ConfigWindow : Window
     public override void Draw()
     {
         string authorName = _configuration.AuthorName;
-        if (ImGui.InputText("Author name for new files", ref authorName, 256))
+        if (ImGui.InputText("新檔案的作者名稱", ref authorName, 256))
         {
             _configuration.AuthorName = authorName;
             Save();

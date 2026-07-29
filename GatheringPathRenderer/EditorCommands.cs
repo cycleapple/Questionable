@@ -117,7 +117,7 @@ internal sealed class EditorCommands : IDisposable
         else
         {
             (targetFile, root) = CreateNewFile(gatheringPoint, target);
-            _chatGui.Print($"Creating new file under {targetFile.FullName}", "qG");
+            _chatGui.Print($"正在建立新檔案：{targetFile.FullName}", "qG");
         }
 
         _plugin.Save(targetFile, root);
@@ -142,7 +142,7 @@ internal sealed class EditorCommands : IDisposable
                 }
             ]
         });
-        _chatGui.Print("Added group.", "qG");
+            _chatGui.Print("已新增群組。", "qG");
     }
 
     public void AddToExistingGroup(GatheringRoot root, IGameObject target)
@@ -156,7 +156,7 @@ internal sealed class EditorCommands : IDisposable
             {
                 Position = target.Position,
             });
-            _chatGui.Print($"Added location to existing node {target.DataId}.", "qG");
+            _chatGui.Print($"已將位置加入現有採集點 {target.DataId}。", "qG");
         }
         else
         {
@@ -183,7 +183,7 @@ internal sealed class EditorCommands : IDisposable
                     }
                 ]
             });
-            _chatGui.Print($"Added new node {target.DataId}.", "qG");
+            _chatGui.Print($"已新增採集點 {target.DataId}。", "qG");
         }
     }
 
