@@ -101,7 +101,7 @@ internal sealed class StopConditionComponent : ConfigComponent
                     if (currentLevel > 0)
                     {
                         ImGui.SameLine();
-                        ImGui.TextDisabled($"(Current: {currentLevel})");
+                        ImGui.TextDisabled($"（目前：{currentLevel}）");
                     }
                 }
             }

@@ -305,7 +305,7 @@ internal sealed partial class ActiveQuestComponent
                                 }
                             }
                             else
-                                ImGui.BulletText("(none)");
+                                ImGui.BulletText("（無）");
 
                             if (unavailablePriorityQuests.Count > 0)
                             {
@@ -460,7 +460,7 @@ internal sealed partial class ActiveQuestComponent
                     _commandManager.ProcessCommand($"/questinfo {currentQuest.Quest.Id}");
 
                 if (ImGui.IsItemHovered())
-                    ImGui.SetTooltip($"Show information about '{currentQuest.Quest.Info.Name}' in Quest Map plugin.");
+                    ImGui.SetTooltip($"在 Quest Map 插件中查看「{currentQuest.Quest.Info.Name}」的資訊。");
             }
 
             #if DEBUG
@@ -559,7 +559,7 @@ internal sealed partial class ActiveQuestComponent
             }
 
             ImGui.SameLine();
-            if (ImGui.Button("Clear sim"))
+            if (ImGui.Button("清除模擬"))
             {
                 _questController.StopSimulate();
 

@@ -265,7 +265,7 @@ internal sealed class GeneralConfigComponent : ConfigComponent
 #if false
             ImGui.Spacing();
             bool autoStepRefreshEnabled = Configuration.General.AutoStepRefreshEnabled;
-            if (ImGui.Checkbox("Automatically refresh quest steps when stuck (WIP see tooltip)", ref autoStepRefreshEnabled))
+            if (ImGui.Checkbox("卡住時自動重新整理任務步驟（開發中，請查看說明）", ref autoStepRefreshEnabled))
             {
                 Configuration.General.AutoStepRefreshEnabled = autoStepRefreshEnabled;
                 Save();
@@ -281,9 +281,9 @@ internal sealed class GeneralConfigComponent : ConfigComponent
             {
                 using (ImRaii.Tooltip())
                 {
-                    ImGui.Text("Questionable will automatically refresh a quest step if it appears to be stuck after the configured delay.");
-                    ImGui.Text("This helps resume automated quest completion when interruptions occur.");
-                    ImGui.Text("WIP feature, rather than remove it, this is a warning that it isn't fully complete.");
+                    ImGui.Text("若任務步驟在設定的延遲時間後仍疑似卡住，Questionable 會自動重新整理該步驟。");
+                    ImGui.Text("自動流程受到中斷時，此功能可協助恢復任務執行。");
+                    ImGui.Text("此功能仍在開發中，可能尚未完整運作。");
                 }
             }
 
@@ -292,7 +292,7 @@ internal sealed class GeneralConfigComponent : ConfigComponent
                 ImGui.Indent();
                 int autoStepRefreshDelay = Configuration.General.AutoStepRefreshDelaySeconds;
                 ImGui.SetNextItemWidth(150f);
-                if (ImGui.SliderInt("Refresh delay (seconds)", ref autoStepRefreshDelay, 30, 180))
+                if (ImGui.SliderInt("重新整理延遲（秒）", ref autoStepRefreshDelay, 30, 180))
                 {
                     Configuration.General.AutoStepRefreshDelaySeconds = autoStepRefreshDelay;
                     Save();

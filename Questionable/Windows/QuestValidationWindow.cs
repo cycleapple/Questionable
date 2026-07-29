@@ -43,13 +43,13 @@ internal sealed class QuestValidationWindow : LWindow
         using var table = ImRaii.Table("QuestSelection", 5, ImGuiTableFlags.Borders | ImGuiTableFlags.ScrollY);
         if (!table)
         {
-            ImGui.Text("Not table");
+            ImGui.Text("無法建立驗證清單。");
             return;
         }
 
         ImGui.TableSetupColumn("任務", ImGuiTableColumnFlags.WidthFixed, 50);
         ImGui.TableSetupColumn("", ImGuiTableColumnFlags.WidthFixed, 200);
-        ImGui.TableSetupColumn("Seq", ImGuiTableColumnFlags.WidthFixed, 30);
+        ImGui.TableSetupColumn("序列", ImGuiTableColumnFlags.WidthFixed, 30);
         ImGui.TableSetupColumn("步驟", ImGuiTableColumnFlags.WidthFixed, 30);
         ImGui.TableSetupColumn("問題", ImGuiTableColumnFlags.None, 200);
         ImGui.TableHeadersRow();

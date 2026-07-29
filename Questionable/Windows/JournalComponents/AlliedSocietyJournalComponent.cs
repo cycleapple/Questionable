@@ -58,9 +58,9 @@ internal sealed class AlliedSocietyJournalComponent
             return;
         bool addPending = false;
         #if DEBUG
-        if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Plus, "Add"))
-            addPending = true;
-        ImGui.SameLine();
+            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.Plus, "加入"))
+                addPending = true;
+            ImGui.SameLine();
         #endif
 
         unsafe {

@@ -22,23 +22,21 @@ internal sealed class PluginConfigComponent : ConfigComponent
         new("vnavmesh",
             "vnavmesh",
             """
-            vnavmesh handles the navigation within a zone, moving
-            your character to the next quest-related objective.
+            vnavmesh 負責區域內導航，將角色移動至下一個任務目標。
             """,
             new Uri("https://github.com/awgil/ffxiv_navmesh/"),
             new Uri("https://puni.sh/api/repository/veyn")),
         new("Lifestream",
             "Lifestream",
             """
-            Used to travel to aethernet shards in cities.
+            用於在城市內透過都市傳送網移動。
             """,
             new Uri("https://github.com/NightmareXIV/Lifestream"),
             new Uri("https://github.com/NightmareXIV/MyDalamudPlugins/raw/main/pluginmaster.json")),
         new("TextAdvance",
             "TextAdvance",
             """
-            Automatically accepts and turns in quests, skips cutscenes
-            and dialogue.
+            自動接取與繳交任務，並略過過場動畫與對話。
             """,
             new Uri("https://github.com/NightmareXIV/TextAdvance"),
             new Uri("https://github.com/NightmareXIV/MyDalamudPlugins/raw/main/pluginmaster.json")),
@@ -102,44 +100,42 @@ internal sealed class PluginConfigComponent : ConfigComponent
             new PluginInfo("CBT (formerly known as Automaton)",
                 "Automaton",
                 """
-                Automaton is a collection of automation-related tweaks.
+                CBT 是一組與自動化相關的調整功能。
                 """,
                 new Uri("https://github.com/Jaksuhn/Automaton"),
                 new Uri("https://puni.sh/api/repository/croizat"),
                 "/cbt",
                 [
-                    new PluginDetailInfo("'Sniper no sniping' enabled",
-                        "Automatically completes sniping tasks introduced in Stormblood",
+                    new PluginDetailInfo("已啟用「Sniper no sniping」",
+                        "自動完成「紅蓮之狂潮」加入的射擊小遊戲",
                         () => automatonIpc.IsAutoSnipeEnabled)
                 ]),
             new PluginInfo("Pandora's Box",
                 "PandorasBox",
                 """
-                Pandora's Box is a collection of tweaks.
+                Pandora's Box 是一組便利功能。
                 """,
                 new Uri("https://github.com/PunishXIV/PandorasBox"),
                 new Uri("https://puni.sh/api/plugins"),
                 "/pandora",
                 [
-                    new PluginDetailInfo("'Auto Active Time Maneuver' enabled",
+                    new PluginDetailInfo("已啟用「Auto Active Time Maneuver」",
                         """
-                        Automatically completes active time maneuvers in
-                        single player instances, trials and raids"
+                        在單人任務戰鬥、討伐殲滅戰及大型任務中，自動完成即時操作。
                         """,
                         () => pandorasBoxIpc.IsAutoActiveTimeManeuverEnabled)
                 ]),
             new("NotificationMaster",
                 "NotificationMaster",
                 """
-                Sends a configurable out-of-game notification if a quest
-                requires manual actions.
+                任務需要手動操作時，傳送可自訂的遊戲外通知。
                 """,
                 new Uri("https://github.com/NightmareXIV/NotificationMaster"),
                 null),
             new("Artisan",
                 "Artisan",
                 """
-                Automates crafting
+                自動進行製作
                 """,
                 new Uri("https://github.com/PunishXIV/Artisan"),
                 new Uri("https://puni.sh/api/plugins"),
@@ -193,7 +189,7 @@ internal sealed class PluginConfigComponent : ConfigComponent
         {
             using (ImRaii.PushIndent())
             {
-                if (ImGui.RadioButton("No rotation/combat plugin (combat must be done manually)",
+                if (ImGui.RadioButton("不使用循環／戰鬥插件（必須手動戰鬥）",
                         _configuration.General.CombatModule == Configuration.ECombatModule.None))
                 {
                     _configuration.General.CombatModule = Configuration.ECombatModule.None;
@@ -324,7 +320,7 @@ internal sealed class PluginConfigComponent : ConfigComponent
                 else
                 {
                     ImGui.AlignTextToFramePadding();
-                    ImGuiComponents.HelpMarker("Available on official Dalamud Repository");
+                    ImGuiComponents.HelpMarker("可從 Dalamud 官方插件庫取得");
                 }
             }
         }

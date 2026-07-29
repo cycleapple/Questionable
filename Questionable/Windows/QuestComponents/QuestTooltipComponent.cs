@@ -78,18 +78,18 @@ internal sealed class QuestTooltipComponent
             }
 
             if (quest.Root.Author.Count == 1)
-                ImGui.Text($"Author: {quest.Root.Author[0]}");
+                ImGui.Text($"作者：{quest.Root.Author[0]}");
             else
-                ImGui.Text($"Authors: {string.Join(", ", quest.Root.Author)}");
+                ImGui.Text($"作者：{string.Join(", ", quest.Root.Author)}");
 
             if (quest.Root.Comment != null)
-                ImGui.Text($"Comment: {quest.Root.Comment.Split('\n', 2)[0]}");
+                ImGui.Text($"備註：{quest.Root.Comment.Split('\n', 2)[0]}");
 
             if (quest.Root.LastChecked.Date != null)
-                ImGui.Text($"Last checked: {quest.Root.LastChecked.Date} by {quest.Root.LastChecked.Username}");
+                ImGui.Text($"最後檢查：{quest.Root.LastChecked.Date}（{quest.Root.LastChecked.Username}）");
 
             if (questInfo.AlliedSociety != EAlliedSociety.None)
-                ImGui.Text($"Society: {questInfo.AlliedSociety}");
+                ImGui.Text($"友好部族：{questInfo.AlliedSociety}");
         }
         else
         {
@@ -119,9 +119,9 @@ internal sealed class QuestTooltipComponent
             if (questInfo.PreviousQuests.Count > 1)
             {
                 if (questInfo.PreviousQuestJoin == EQuestJoin.All)
-                    ImGui.Text("Requires all:");
+                    ImGui.Text("需要全部完成：");
                 else if (questInfo.PreviousQuestJoin == EQuestJoin.AtLeastOne)
-                    ImGui.Text("Requires one:");
+                    ImGui.Text("至少需要完成一項：");
             }
 
             foreach (var q in questInfo.PreviousQuests)
@@ -142,7 +142,7 @@ internal sealed class QuestTooltipComponent
                 else
                 {
                     using var _ = ImRaii.Disabled();
-                    _uiUtils.ChecklistItem($"Unknown Quest ({q.QuestId})", ImGuiColors.DalamudGrey,
+                    _uiUtils.ChecklistItem($"未知任務（{q.QuestId}）", ImGuiColors.DalamudGrey,
                         FontAwesomeIcon.Question);
                 }
             }
@@ -151,7 +151,7 @@ internal sealed class QuestTooltipComponent
         if (questInfo is QuestInfo actualQuestInfo)
         {
             if (actualQuestInfo.MoogleDeliveryLevel > 0)
-                ImGui.Text($"Requires Carrier Level {actualQuestInfo.MoogleDeliveryLevel}");
+                ImGui.Text($"需要郵差等級 {actualQuestInfo.MoogleDeliveryLevel}");
 
 
             if (counter == 0 && actualQuestInfo.QuestLocks.Count > 0)
@@ -160,12 +160,12 @@ internal sealed class QuestTooltipComponent
                 if (actualQuestInfo.QuestLocks.Count > 1)
                 {
                     if (actualQuestInfo.QuestLockJoin == EQuestJoin.All)
-                        ImGui.Text("Blocked by (if all completed):");
+                        ImGui.Text("完成以下全部任務時將無法接取：");
                     else if (actualQuestInfo.QuestLockJoin == EQuestJoin.AtLeastOne)
-                        ImGui.Text("Blocked by (if at least completed):");
+                        ImGui.Text("完成以下至少一項時將無法接取：");
                 }
                 else
-                    ImGui.Text("Blocked by (if completed):");
+                    ImGui.Text("完成下列任務時將無法接取：");
 
                 foreach (var q in actualQuestInfo.QuestLocks)
                 {
@@ -184,12 +184,12 @@ internal sealed class QuestTooltipComponent
                 if (actualQuestInfo.PreviousInstanceContent.Count > 1)
                 {
                     if (questInfo.PreviousQuestJoin == EQuestJoin.All)
-                        ImGui.Text("Requires all:");
+                        ImGui.Text("需要全部完成：");
                     else if (questInfo.PreviousQuestJoin == EQuestJoin.AtLeastOne)
-                        ImGui.Text("Requires one:");
+                        ImGui.Text("至少需要完成一項：");
                 }
                 else
-                    ImGui.Text("Requires:");
+                    ImGui.Text("需要完成：");
 
                 foreach (var instanceId in actualQuestInfo.PreviousInstanceContent)
                 {
@@ -204,14 +204,14 @@ internal sealed class QuestTooltipComponent
                 ImGui.Separator();
                 string gcName = actualQuestInfo.GrandCompany switch
                 {
-                    GrandCompany.Maelstrom => "Maelstrom",
-                    GrandCompany.TwinAdder => "Twin Adder",
-                    GrandCompany.ImmortalFlames => "Immortal Flames",
-                    _ => "None",
+                    GrandCompany.Maelstrom => "黑渦團",
+                    GrandCompany.TwinAdder => "雙蛇黨",
+                    GrandCompany.ImmortalFlames => "恆輝隊",
+                    _ => "無",
                 };
 
                 GrandCompany currentGrandCompany = _questFunctions.GetGrandCompany();
-                _uiUtils.ChecklistItem($"Grand Company: {gcName}", actualQuestInfo.GrandCompany == currentGrandCompany);
+                _uiUtils.ChecklistItem($"所屬大國防聯軍：{gcName}", actualQuestInfo.GrandCompany == currentGrandCompany);
             }
 
             if (showItemRewards && actualQuestInfo.ItemRewards.Count > 0)

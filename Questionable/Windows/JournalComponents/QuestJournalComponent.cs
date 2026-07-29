@@ -239,7 +239,7 @@ internal sealed class QuestJournalComponent
         else if (fate)
         {
             if (_uiUtils.ChecklistItem(lastChecked, ImGuiColors.DalamudOrange, FontAwesomeIcon.ExclamationTriangle))
-                ImGui.SetTooltip($"This quest requires completing a FATE.{lastCheckedLong}");
+                ImGui.SetTooltip($"此任務需要先完成危命任務。{lastCheckedLong}");
         }
         else if (quest is { Root.Disabled: false })
         {
@@ -256,14 +256,14 @@ internal sealed class QuestJournalComponent
             }
             else
                 if (_uiUtils.ChecklistItem(lastChecked, true))
-                    ImGui.SetTooltip($"This quest is supported.{lastCheckedLong}" + (!reason.Equals(defaultReason, StringComparison.Ordinal) ? $"\nComment: {reason}" : ""));
+                    ImGui.SetTooltip($"此任務已受支援。{lastCheckedLong}" + (!reason.Equals(defaultReason, StringComparison.Ordinal) ? $"\n備註：{reason}" : ""));
         }
         else
         {
             if (quest == null)
                 reason = "No quest path.";
             if (_uiUtils.ChecklistItem(lastChecked, false))
-                ImGui.SetTooltip($"This quest is not yet supported.{lastCheckedLong}" + (!reason.Equals(defaultReason, StringComparison.Ordinal) ? $"\nReason: {reason}" : ""));
+                ImGui.SetTooltip($"此任務尚未受支援。{lastCheckedLong}" + (!reason.Equals(defaultReason, StringComparison.Ordinal) ? $"\n原因：{reason}" : ""));
         }
 
         ImGui.TableNextColumn();

@@ -80,16 +80,16 @@ internal sealed class QuickAccessButtonsComponent
         bool isNavmeshAvailable = _commandManager.Commands.ContainsKey("/vnav");
         using (ImRaii.Disabled(!isNavmeshAvailable || !ImGui.IsKeyDown(ImGuiKey.ModCtrl)))
         {
-            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.GlobeEurope, "Rebuild Navmesh"))
+            if (ImGuiComponents.IconButtonWithText(FontAwesomeIcon.GlobeEurope, "重建導航網格"))
                 _commandManager.ProcessCommand("/vnav rebuild");
         }
 
         if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
         {
             if (!isNavmeshAvailable)
-                ImGui.SetTooltip("vnavmesh is not available.\nPlease install it first.");
+                ImGui.SetTooltip("vnavmesh 目前不可用。\n請先安裝並啟用該插件。");
             else
-                ImGui.SetTooltip("Hold CTRL to enable this button.\nRebuilding the navmesh will take some time.");
+                ImGui.SetTooltip("按住 Ctrl 才能使用此按鈕。\n重建導航網格需要一些時間。");
         }
     }
 
@@ -118,7 +118,7 @@ internal sealed class QuickAccessButtonsComponent
             });
 
         if (ImGui.IsItemHovered())
-            ImGui.SetTooltip("Sponsor QST development");
+            ImGui.SetTooltip("贊助 Questionable 開發");
     }
 
     private void DrawValidationIssuesButton()

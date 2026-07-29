@@ -83,7 +83,7 @@ internal sealed class QuestRewardComponent
                     if (!tooltip)
                         continue;
 
-                    ImGui.Text($"Obtained from: {questInfo.Name}");
+                    ImGui.Text($"取得來源：{questInfo.Name}");
                     using (ImRaii.PushIndent())
                         _questTooltipComponent.DrawInner(questInfo, false);
                 }

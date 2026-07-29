@@ -82,7 +82,7 @@ internal sealed class QuestSelectionWindow : LWindow
         {
             var targetId = GameFunctions.GetBaseID(gameObject);
             var targetName = gameObject.Name.ToString();
-            WindowName = $"Quests starting with {targetName} [{targetId}]{WindowId}";
+            WindowName = $"由 {targetName} [{targetId}] 開始的任務{WindowId}";
 
             _quests = _questData.GetAllByIssuerDataId(targetId);
             if (_gameGui.TryGetAddonByName<AddonSelectIconString>("SelectIconString", out var addonSelectIconString))
@@ -108,7 +108,7 @@ internal sealed class QuestSelectionWindow : LWindow
     {
         var territoryId = _clientState.TerritoryType;
         var territoryName = _territoryData.GetNameAndId(territoryId);
-        WindowName = $"Quests starting in {territoryName}{WindowId}";
+        WindowName = $"在 {territoryName} 開始的任務{WindowId}";
 
         _quests = _questRegistry.AllQuests
             .Where(x => x.FindSequence(0)?.FindStep(0)?.TerritoryId == territoryId)
@@ -140,7 +140,7 @@ internal sealed class QuestSelectionWindow : LWindow
         using var table = ImRaii.Table("QuestSelection", 4, ImGuiTableFlags.Borders | ImGuiTableFlags.ScrollY);
         if (!table)
         {
-            ImGui.Text("Not table");
+            ImGui.Text("無法建立任務清單。");
             return;
         }
 
@@ -158,7 +158,7 @@ internal sealed class QuestSelectionWindow : LWindow
                              2 * ImGui.GetStyle().ItemSpacing.X;
         ImGui.PopFont();
 
-        ImGui.TableSetupColumn("Id", ImGuiTableColumnFlags.WidthFixed, 50 * ImGui.GetIO().FontGlobalScale);
+        ImGui.TableSetupColumn("ID", ImGuiTableColumnFlags.WidthFixed, 50 * ImGui.GetIO().FontGlobalScale);
         ImGui.TableSetupColumn("", ImGuiTableColumnFlags.WidthFixed, statusIconSize);
         ImGui.TableSetupColumn("名稱", ImGuiTableColumnFlags.None, 200);
         ImGui.TableSetupColumn("操作", ImGuiTableColumnFlags.WidthFixed, actionIconSize);

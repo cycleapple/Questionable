@@ -153,7 +153,7 @@ internal sealed class GatheringJournalComponent
             return;
 
         ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X);
-        if (ImGui.InputTextWithHint(string.Empty, "Search areas, gathering points and items", ref _searchText, 256))
+        if (ImGui.InputTextWithHint(string.Empty, "搜尋區域、採集點與物品", ref _searchText, 256))
             UpdateFilter();
 
         if (_filteredExpansions.Count > 0)
