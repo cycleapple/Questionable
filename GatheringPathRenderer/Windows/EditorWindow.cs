@@ -125,7 +125,7 @@ internal sealed class EditorWindow : Window
         }
 
         _target ??= _objectTable
-            .Where(x => x.ObjectKind == ObjectKind.GatheringPoint && x.BaseId == location.Node.DataId)
+            .Where(x => x.ObjectKind == ObjectKind.GatheringPoint && x.DataId == location.Node.DataId)
             .Select(x => new
             {
                 Object = x,
@@ -156,7 +156,7 @@ internal sealed class EditorWindow : Window
             ImGui.Text(context.File.Name);
             ImGui.Unindent();
             ImGui.Text(
-                $"{_target.BaseId} +{node.Locations.Count - 1} / {location.InternalId.ToString()[..4]}");
+                $"{_target.DataId} +{node.Locations.Count - 1} / {location.InternalId.ToString()[..4]}");
             ImGui.Text(string.Create(CultureInfo.InvariantCulture, $"{location.Position:G}"));
 
             if (!_changes.TryGetValue(location.InternalId, out LocationOverride? locationOverride))
@@ -222,7 +222,7 @@ internal sealed class EditorWindow : Window
             ImGui.EndDisabled();
 
 
-            List<IGameObject> nodesInObjectTable = [.. _objectTable.Where(x => x.ObjectKind == ObjectKind.GatheringPoint && x.BaseId == _target.BaseId)];
+            List<IGameObject> nodesInObjectTable = [.. _objectTable.Where(x => x.ObjectKind == ObjectKind.GatheringPoint && x.DataId == _target.DataId)];
             List<IGameObject> missingLocations = [.. nodesInObjectTable.Where(x => !node.Locations.Any(y => Vector3.Distance(x.Position, y.Position) < 0.1f))];
             if (missingLocations.Count > 0)
             {
@@ -237,7 +237,7 @@ internal sealed class EditorWindow : Window
         }
         else if (_target != null)
         {
-            var gatheringPoint = _dataManager.GetExcelSheet<GatheringPoint>().GetRowOrDefault(_target.BaseId);
+            var gatheringPoint = _dataManager.GetExcelSheet<GatheringPoint>().GetRowOrDefault(_target.DataId);
             if (gatheringPoint == null)
                 return;
 
@@ -254,7 +254,7 @@ internal sealed class EditorWindow : Window
                     _plugin.Save(targetFile, root);
                 }
 
-                ImGui.BeginDisabled(root.Groups.Any(group => group.Nodes.Any(node => node.DataId == _target.BaseId)));
+                ImGui.BeginDisabled(root.Groups.Any(group => group.Nodes.Any(node => node.DataId == _target.DataId)));
                 ImGui.SameLine();
                 if (ImGui.Button("Add as new group"))
                 {
