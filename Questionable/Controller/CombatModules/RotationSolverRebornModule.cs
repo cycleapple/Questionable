@@ -85,9 +85,11 @@ internal sealed class RotationSolverRebornModule : ICombatModule, IDisposable
     [PublicAPI]
     enum StateCommandType : byte
     {
-        Off,
-        Auto,
-        TargetOnly,
-        Manual,
+        // Keep these numeric values synchronized with the API13-safe
+        // RotationSolverReborn 7.3.5 StateCommandType contract.
+        Off = 0,
+        Auto = 1,
+        Manual = 2,
+        AutoDuty = 3,
     }
 }

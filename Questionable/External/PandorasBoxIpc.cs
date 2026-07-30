@@ -43,6 +43,7 @@ internal sealed class PandorasBoxIpc : IDisposable
 
     private bool _loggedIpcError;
     private HashSet<string>? _pausedFeatures;
+    private DateTime _nextPandoraRetryAt = DateTime.MinValue;
 
     public PandorasBoxIpc(IDalamudPluginInterface pluginInterface,
         IFramework framework,
@@ -77,7 +78,7 @@ internal sealed class PandorasBoxIpc : IDisposable
                 if (!_loggedIpcError)
                 {
                     _loggedIpcError = true;
-                    _logger.LogWarning(e, "Could not query pandora's box for feature status, probably not installed");
+                    _logger.LogDebug(e, "Pandora's Box IPC is unavailable; the optional integration will be skipped");
                 }
 
                 return false;
@@ -107,7 +108,7 @@ internal sealed class PandorasBoxIpc : IDisposable
 
     private void DisableConflictingFeatures()
     {
-        if (_pausedFeatures != null)
+        if (_pausedFeatures != null || DateTime.UtcNow < _nextPandoraRetryAt)
             return;
 
         _pausedFeatures = [];
@@ -123,6 +124,21 @@ internal sealed class PandorasBoxIpc : IDisposable
                     _pausedFeatures.Add(feature);
                     _logger.LogInformation("Paused Pandora's Box feature: {Feature}", feature);
                 }
+            }
+            catch (IpcNotReadyError)
+            {
+                // Pandora's Box is optional and initializes its IPC asynchronously.
+                // Do not emit one warning per feature; retry after a short delay so
+                // a provider that is still starting can be detected safely.
+                _pausedFeatures = null;
+                _nextPandoraRetryAt = DateTime.UtcNow.AddSeconds(1);
+                if (!_loggedIpcError)
+                {
+                    _loggedIpcError = true;
+                    _logger.LogDebug("Pandora's Box IPC is not registered; retrying the optional integration later");
+                }
+
+                return;
             }
             catch (IpcError e)
             {
@@ -150,5 +166,6 @@ internal sealed class PandorasBoxIpc : IDisposable
         }
 
         _pausedFeatures = null;
+        _nextPandoraRetryAt = DateTime.MinValue;
     }
 }
