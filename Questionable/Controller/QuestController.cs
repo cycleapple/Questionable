@@ -82,6 +82,11 @@ internal sealed class QuestController : MiniTaskController<QuestController>
     private DateTime _lastProgressUpdate = DateTime.Now;
     private DateTime _lastAutoRefresh = DateTime.MinValue;
 
+    private const int MaxAutoRetryCount = 5;
+    private int _autoRetryCount;
+    private DateTime _nextAutoRetryAt = DateTime.MinValue;
+    private string? _autoRetryReason;
+
     public QuestController(
         IClientState clientState,
         IObjectTable objectTable,
@@ -249,6 +254,7 @@ internal sealed class QuestController : MiniTaskController<QuestController>
         if (!_clientState.IsLoggedIn)
         {
             StopAllDueToConditionFailed("Logged out");
+            return;
         }
         if (_condition[ConditionFlag.Unconscious])
         {
@@ -265,6 +271,7 @@ internal sealed class QuestController : MiniTaskController<QuestController>
             else if (!_taskQueue.AllTasksComplete)
             {
                 StopAllDueToConditionFailed("HP = 0");
+                return;
             }
         }
         else if (_configuration.General.UseEscToCancelQuesting && _keyState[VirtualKey.ESCAPE])
@@ -272,8 +279,12 @@ internal sealed class QuestController : MiniTaskController<QuestController>
             if (!_taskQueue.AllTasksComplete)
             {
                 StopAllDueToConditionFailed("ESC pressed");
+                return;
             }
         }
+
+        if (TryRunScheduledAutoRetry())
+            return;
 
         // check level stop condition
         // stops immediately instead of quest stop after completion of quest
@@ -495,7 +506,7 @@ internal sealed class QuestController : MiniTaskController<QuestController>
 
                         _logger.LogInformation("No current quest, resetting data [CQI: {CurrrentQuestData}], [CQ: {QuestData}], [MSQ: {MsqData}]", _questFunctions.GetCurrentQuestInternal(true), _questFunctions.GetCurrentQuest(), _questFunctions.GetMainScenarioQuest());
                         _startedQuest = null;
-                        Stop("Resetting current quest");
+                        WaitForNextQuest("Resetting current quest");
                     }
 
                     questToRun = null;
@@ -551,7 +562,7 @@ internal sealed class QuestController : MiniTaskController<QuestController>
                     {
                         _logger.LogInformation("No active quest anymore? Not sure what happened...");
                         _startedQuest = null;
-                        Stop("No active Quest");
+                        WaitForNextQuest("No active Quest");
                     }
 
                     return;
@@ -562,8 +573,7 @@ internal sealed class QuestController : MiniTaskController<QuestController>
 
             if (questToRun == null)
             {
-                DebugState = "No quest active";
-                Stop("No quest active");
+                WaitForNextQuest("No quest active");
                 return;
             }
 
@@ -731,6 +741,7 @@ internal sealed class QuestController : MiniTaskController<QuestController>
 
     public override void Stop(string label)
     {
+        ResetAutoRetryState();
         _highlightObject.SetHighlight([]);
         using var scope = _logger.BeginScope($"Stop/{label}");
         if (IsRunning || AutomationType != EAutomationType.Manual)
@@ -754,6 +765,90 @@ internal sealed class QuestController : MiniTaskController<QuestController>
         }
     }
 
+    private void WaitForNextQuest(string label)
+    {
+        if (_configuration.General.AutoMode && AutomationType == EAutomationType.Automatic)
+        {
+            if (IsRunning)
+                ClearTasksInternal();
+
+            DebugState = "Auto：等待下一個任務";
+            _lastTaskUpdate = DateTime.Now;
+            return;
+        }
+
+        DebugState = "No quest active";
+        Stop(label);
+    }
+
+    public void RetryAfterRecoverableFailure(string label)
+    {
+        if (!_configuration.General.AutoMode || AutomationType != EAutomationType.Automatic)
+        {
+            Stop(label);
+            return;
+        }
+
+        if (_autoRetryReason != null)
+        {
+            _logger.LogDebug("Ignoring duplicate recoverable failure while an Auto retry is pending: {Reason}", label);
+            return;
+        }
+
+        ClearTasksInternal();
+        _movementController.Stop();
+        _autoRetryCount++;
+        if (_autoRetryCount > MaxAutoRetryCount)
+        {
+            _chatGui.PrintError(
+                $"Auto 已在同一步驟重試 {MaxAutoRetryCount} 次，為避免無限循環已停止。最後錯誤：{label}",
+                CommandHandler.MessageTag, CommandHandler.TagColor);
+            Stop($"Auto retry limit reached: {label}");
+            return;
+        }
+
+        int delaySeconds = Math.Min(30, 1 << _autoRetryCount);
+        _autoRetryReason = label;
+        _nextAutoRetryAt = DateTime.Now.AddSeconds(delaySeconds);
+        DebugState = $"Auto：{delaySeconds} 秒後重試（{_autoRetryCount}/{MaxAutoRetryCount}）";
+        _logger.LogWarning(
+            "Auto retry {RetryCount}/{MaxRetryCount} scheduled in {DelaySeconds}s after: {Reason}",
+            _autoRetryCount, MaxAutoRetryCount, delaySeconds, label);
+    }
+
+    private bool TryRunScheduledAutoRetry()
+    {
+        if (_autoRetryReason == null)
+            return false;
+
+        if (!_configuration.General.AutoMode || AutomationType != EAutomationType.Automatic)
+        {
+            ResetAutoRetryState();
+            return false;
+        }
+
+        if (DateTime.Now < _nextAutoRetryAt)
+        {
+            int seconds = Math.Max(1, (int)Math.Ceiling((_nextAutoRetryAt - DateTime.Now).TotalSeconds));
+            DebugState = $"Auto：{seconds} 秒後重試（{_autoRetryCount}/{MaxAutoRetryCount}）";
+            return true;
+        }
+
+        string reason = _autoRetryReason;
+        _autoRetryReason = null;
+        _nextAutoRetryAt = DateTime.MinValue;
+        _logger.LogInformation("Auto retrying after: {Reason}", reason);
+        ExecuteNextStep();
+        return true;
+    }
+
+    private void ResetAutoRetryState()
+    {
+        _autoRetryCount = 0;
+        _nextAutoRetryAt = DateTime.MinValue;
+        _autoRetryReason = null;
+    }
+
     public void StopAllDueToConditionFailed(string label)
     {
         Stop(label);
@@ -768,6 +863,7 @@ internal sealed class QuestController : MiniTaskController<QuestController>
         {
             using var scope = _logger.BeginScope(label);
 
+            ResetAutoRetryState();
             ClearTasksInternal();
 
             if (CurrentQuest?.Step is >= 0 and < 255)
@@ -849,12 +945,16 @@ internal sealed class QuestController : MiniTaskController<QuestController>
 
     protected override void OnNextStep(ILastTask task)
     {
+        ResetAutoRetryState();
         IncreaseStepCount(task.ElementId, task.Sequence, true);
     }
+
+    protected override void HandleTaskFailure(string label) => RetryAfterRecoverableFailure(label);
 
     public void Start(string label)
     {
         using var scope = _logger.BeginScope($"Q/{label}");
+        ResetAutoRetryState();
         AutomationType = EAutomationType.Automatic;
         ExecuteNextStep();
     }
@@ -937,7 +1037,7 @@ internal sealed class QuestController : MiniTaskController<QuestController>
         {
             _logger.LogError(e, "Failed to create tasks");
             _chatGui.PrintError("Failed to start next task sequence, please check /xllog for details.", CommandHandler.MessageTag, CommandHandler.TagColor);
-            Stop("Tasks failed to create");
+            RetryAfterRecoverableFailure("Tasks failed to create");
         }
     }
 

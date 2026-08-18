@@ -9,6 +9,7 @@ using Dalamud.Interface;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
+using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using Microsoft.Extensions.Logging;
@@ -39,6 +40,7 @@ internal sealed partial class ActiveQuestComponent
     //private readonly IPlayerState _playerState;
     private readonly IChatGui _chatGui;
     private readonly ILogger<ActiveQuestComponent> _logger;
+    private readonly IDalamudPluginInterface _pluginInterface;
 
     public ActiveQuestComponent(
         QuestController questController,
@@ -54,6 +56,7 @@ internal sealed partial class ActiveQuestComponent
         IClientState clientState,
         //IPlayerState playerState,
         IChatGui chatGui,
+        IDalamudPluginInterface pluginInterface,
         ILogger<ActiveQuestComponent> logger)
     {
         _questController = questController;
@@ -69,6 +72,7 @@ internal sealed partial class ActiveQuestComponent
         _clientState = clientState;
         //_playerState = playerState;
         _chatGui = chatGui;
+        _pluginInterface = pluginInterface;
         _logger = logger;
     }
 
@@ -150,6 +154,32 @@ internal sealed partial class ActiveQuestComponent
             ImGui.SameLine();
             if (ImGuiComponents.IconButton(FontAwesomeIcon.SortAmountDown))
                 _priorityWindow.ToggleOrUncollapse();
+
+            DrawAutoModeToggle();
+        }
+    }
+
+    private void DrawAutoModeToggle()
+    {
+        ImGui.SameLine();
+        bool autoMode = _configuration.General.AutoMode;
+        if (ImGui.Checkbox("Auto", ref autoMode))
+        {
+            _configuration.General.AutoMode = autoMode;
+            _pluginInterface.SavePluginConfig(_configuration);
+            if (!autoMode &&
+                _questController.AutomationType == QuestController.EAutomationType.Automatic &&
+                !_questController.IsRunning)
+            {
+                _questController.Stop("Auto disabled");
+            }
+        }
+
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip(
+                "啟用後，按下開始會在任務交接時持續等待下一個任務。\n" +
+                "可恢復的錯誤最多重試 5 次並逐次延長等待；手動停止、ESC、死亡與登出仍會停止。");
         }
     }
 
@@ -422,6 +452,8 @@ internal sealed partial class ActiveQuestComponent
             _questController.Stop("UI stop");
             _gatheringController.Stop("UI stop");
         }
+
+        DrawAutoModeToggle();
 
         if (isMinimized)
         {
