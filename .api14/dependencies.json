@@ -6,6 +6,12 @@
     "sha256": "470a7af20bcdd24539e4c9dbcafc6c059ef1358709d7b9b8642056e54959af6d"
   },
   {
+    "path": "api14-deps/Pictomancy",
+    "baseCommit": "788bc339a67e7a3db01a47a954034a83b9c3b61b",
+    "patch": "patches/cd088f19ec0d9e46.patch",
+    "sha256": "1e326a328e0cef819a3bb0b40e74a72a008b2a6916d82886bd4401884fcfa112"
+  },
+  {
     "path": "vendor/NotificationMasterAPI",
     "baseCommit": "4820166aebf63290616e7f9090b514936eab13b3",
     "patch": "patches/844222283624f171.patch",

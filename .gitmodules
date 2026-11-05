@@ -6,4 +6,4 @@
 	url = https://github.com/NightmareXIV/NotificationMasterAPI.git
 [submodule "api14-deps/Pictomancy"]
 	path = api14-deps/Pictomancy
-	url = E:\\FFXIV\\XIVLauncher\\api13-extended-work\\sources\\ExplorersIcebox-api13\\ffxiv_pictomancy
+	url = https://github.com/sourpuh/ffxiv_pictomancy
