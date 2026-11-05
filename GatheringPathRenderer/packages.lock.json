@@ -20,18 +20,6 @@
         "resolved": "3.1.0.29",
         "contentHash": "BFntZNmab1tbfIAc4l4sqVBZtecp4yJ7TtbKCZzLRXSaf4wy0xhTknMlCoJYZX15NqeoL7PK1wIjnJK8Wg9m9g=="
       },
-      "Pictomancy": {
-        "type": "Direct",
-        "requested": "[0.0.1, )",
-        "resolved": "0.0.1",
-        "contentHash": "o40yKEYUsUmHLGEyfi2dzrPJBaiYGAL6Jwc32NOZUx9znXvwL0RS2A3AOGzi4wHhTEfTesLuU5yNIs60hT4ayg==",
-        "dependencies": {
-          "SharpDX.D3DCompiler": "4.2.0",
-          "SharpDX.Direct2D1": "4.2.0",
-          "SharpDX.Direct3D11": "4.2.0",
-          "SharpDX.Mathematics": "4.2.0"
-        }
-      },
       "JetBrains.Annotations": {
         "type": "Transitive",
         "resolved": "2024.3.0",
@@ -111,6 +99,15 @@
           "DalamudPackager": "[14.0.1, )",
           "ECommons": "[3.1.0.29, )",
           "JetBrains.Annotations": "[2024.3.0, )"
+        }
+      },
+      "pictomancy": {
+        "type": "Project",
+        "dependencies": {
+          "SharpDX.D3DCompiler": "[4.2.0, )",
+          "SharpDX.Direct2D1": "[4.2.0, )",
+          "SharpDX.Direct3D11": "[4.2.0, )",
+          "SharpDX.Mathematics": "[4.2.0, )"
         }
       },
       "questionable.model": {

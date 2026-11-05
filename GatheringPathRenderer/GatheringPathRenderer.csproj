@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Pictomancy" Version="0.0.1" />
+      <ProjectReference Include="../api14-deps/Pictomancy/Pictomancy/Pictomancy.csproj" />
     </ItemGroup>
 
     <ItemGroup>

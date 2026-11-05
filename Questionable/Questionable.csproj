@@ -9,7 +9,7 @@
     <Import Project="..\LLib\RenameZip.targets" />
 
     <ItemGroup>
-        <PackageReference Include="Dalamud.Extensions.MicrosoftLogging" Version="4.0.1" />
+        <ProjectReference Include="../api14-deps/DalamudLogging/Dalamud.Extensions.MicrosoftLogging.csproj" />
         <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" ExcludeAssets="runtime" />
         <PackageReference Include="JsonSchema.Net" Version="7.4.0" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
