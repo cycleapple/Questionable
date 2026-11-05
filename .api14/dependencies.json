@@ -1,0 +1,14 @@
+[
+  {
+    "path": "LLib",
+    "baseCommit": "c766d4e53ce543ca7da9c1f708cae835b7653a5a",
+    "patch": "patches/81c38144e188f96e.patch",
+    "sha256": "470a7af20bcdd24539e4c9dbcafc6c059ef1358709d7b9b8642056e54959af6d"
+  },
+  {
+    "path": "vendor/NotificationMasterAPI",
+    "baseCommit": "4820166aebf63290616e7f9090b514936eab13b3",
+    "patch": "patches/844222283624f171.patch",
+    "sha256": "1a2d04d308c45ffc31bae2d8c38522e45a49bb0fccf4272951591087a9f2704a"
+  }
+]

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Numerics;
@@ -207,7 +207,7 @@ internal sealed unsafe class GameFunctions
         if (gameObject != null)
         {
             Vector3 position = gameObject.Position;
-            return ActionManager.Instance()->UseActionLocation(ActionType.KeyItem, itemId, location: &position);
+            return ActionManager.Instance()->UseActionLocation(ActionType.EventItem, itemId, location: &position);
         }
 
         return false;
@@ -215,7 +215,7 @@ internal sealed unsafe class GameFunctions
 
     public bool UseItemOnPosition(Vector3 position, uint itemId)
     {
-        return ActionManager.Instance()->UseActionLocation(ActionType.KeyItem, itemId, location: &position);
+        return ActionManager.Instance()->UseActionLocation(ActionType.EventItem, itemId, location: &position);
     }
 
     public bool UseAction(EAction action)
@@ -557,7 +557,7 @@ internal sealed unsafe class GameFunctions
         }
 
         List<uint> unlockedUnlockLinks = [];
-        for (uint unlockLink = 0; unlockLink < uiState->UnlockLinkBitmask.Length * 8; ++unlockLink)
+        for (uint unlockLink = 0; unlockLink < uiState->UnlockLinks.Length * 8; ++unlockLink)
         {
             if (uiState->IsUnlockLinkUnlocked(unlockLink))
                 unlockedUnlockLinks.Add(unlockLink);

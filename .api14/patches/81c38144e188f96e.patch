@@ -1,0 +1,125 @@
+diff --git a/DataManagerExtensions.cs b/DataManagerExtensions.cs
+index c0aade1..8e8b7dd 100644
+--- a/DataManagerExtensions.cs
++++ b/DataManagerExtensions.cs
+@@ -1,4 +1,4 @@
+-﻿using System;
++using System;
+ using System.Collections.Generic;
+ using System.Diagnostics.CodeAnalysis;
+ using System.Linq;
+@@ -146,6 +146,9 @@ public interface IQuestDialogueText
+ [Sheet("PleaseSpecifyTheSheetExplicitly")]
+ public readonly struct QuestDialogueText(ExcelPage page, uint offset, uint row) : IQuestDialogueText, IExcelRow<QuestDialogueText>
+ {
++    public ExcelPage ExcelPage => page;
++    public uint RowOffset => offset;
++
+     public uint RowId => row;
+ 
+     public ReadOnlySeString Key => page.ReadString(offset, offset);
+diff --git a/Gear/GearStatsCalculator.cs b/Gear/GearStatsCalculator.cs
+index 832ded0..3da1690 100644
+--- a/Gear/GearStatsCalculator.cs
++++ b/Gear/GearStatsCalculator.cs
+@@ -1,4 +1,4 @@
+-﻿using System;
++using System;
+ using System.Collections.Generic;
+ using System.Diagnostics.CodeAnalysis;
+ using System.Linq;
+@@ -233,6 +233,9 @@ public sealed class GearStatsCalculator
+ public readonly unsafe struct ExtendedBaseParam(ExcelPage page, uint offset, uint row)
+     : IExcelRow<ExtendedBaseParam>
+ {
++    public ExcelPage ExcelPage => page;
++    public uint RowOffset => offset;
++
+     private const int ParamCount = 23;
+ 
+     public uint RowId => row;
+diff --git a/LLib.csproj b/LLib.csproj
+index a928e3c..46b7d8f 100644
+--- a/LLib.csproj
++++ b/LLib.csproj
+@@ -1,4 +1,4 @@
+-<Project Sdk="Dalamud.NET.Sdk/13.0.0">
++<Project Sdk="Dalamud.NET.Sdk/14.0.1">
+     <PropertyGroup>
+         <Version>1.0</Version>
+         <Platforms>x64</Platforms>
+@@ -7,7 +7,7 @@
+       <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
+     </ItemGroup>
+     <ItemGroup>
+-      <PackageReference Update="DalamudPackager" Version="13.1.0" />
++      <PackageReference Update="DalamudPackager" Version="14.0.1" />
+     </ItemGroup>
+ 
+     <Import Project="LLib.targets" />
+diff --git a/LLib.targets b/LLib.targets
+index 3ac3342..20ca64f 100644
+--- a/LLib.targets
++++ b/LLib.targets
+@@ -17,6 +17,6 @@
+     </PropertyGroup>
+ 
+     <ItemGroup>
+-        <PackageReference Include="ECommons" Version="3.0.1.23" />
++        <PackageReference Include="ECommons" Version="3.1.0.29" />
+     </ItemGroup>
+ </Project>
+diff --git a/global.json b/global.json
+index 93681ff..0b82a98 100644
+--- a/global.json
++++ b/global.json
+@@ -1,7 +1,7 @@
+ {
+   "sdk": {
+-    "version": "9.0.0",
++    "version": "10.0.302",
+     "rollForward": "latestMinor",
+     "allowPrerelease": false
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/packages.lock.json b/packages.lock.json
+index ea58468..3fea74e 100644
+--- a/packages.lock.json
++++ b/packages.lock.json
+@@ -1,24 +1,24 @@
+ {
+   "version": 1,
+   "dependencies": {
+-    "net9.0-windows7.0": {
++    "net10.0-windows7.0": {
+       "DalamudPackager": {
+         "type": "Direct",
+-        "requested": "[13.1.0, )",
+-        "resolved": "13.1.0",
+-        "contentHash": "XdoNhJGyFby5M/sdcRhnc5xTop9PHy+H50PTWpzLhJugjB19EDBiHD/AsiDF66RETM+0qKUdJBZrNuebn7qswQ=="
++        "requested": "[14.0.1, )",
++        "resolved": "14.0.1",
++        "contentHash": "y0WWyUE6dhpGdolK3iKgwys05/nZaVf4ZPtIjpLhJBZvHxkkiE23zYRo7K7uqAgoK/QvK5cqF6l3VG5AbgC6KA=="
+       },
+       "DotNet.ReproducibleBuilds": {
+         "type": "Direct",
+-        "requested": "[1.2.25, )",
+-        "resolved": "1.2.25",
+-        "contentHash": "xCXiw7BCxHJ8pF6wPepRUddlh2dlQlbr81gXA72hdk4FLHkKXas7EH/n+fk5UCA/YfMqG1Z6XaPiUjDbUNBUzg=="
++        "requested": "[1.2.39, )",
++        "resolved": "1.2.39",
++        "contentHash": "fcFN01tDTIQqDuTwr1jUQK/geofiwjG5DycJQOnC72i1SsLAk1ELe+apBOuZ11UMQG8YKFZG1FgvjZPbqHyatg=="
+       },
+       "ECommons": {
+         "type": "Direct",
+-        "requested": "[3.0.1.23, )",
+-        "resolved": "3.0.1.23",
+-        "contentHash": "U3H/XCdSHlKWubXPeenZNDteZQ6nS7vitkFP9hMUkACb456PUwp7ryjhmujhytlFlXHKoCNnvbgQGyFThynf/g=="
++        "requested": "[3.1.0.29, )",
++        "resolved": "3.1.0.29",
++        "contentHash": "BFntZNmab1tbfIAc4l4sqVBZtecp4yJ7TtbKCZzLRXSaf4wy0xhTknMlCoJYZX15NqeoL7PK1wIjnJK8Wg9m9g=="
+       },
+       "JetBrains.Annotations": {
+         "type": "Direct",

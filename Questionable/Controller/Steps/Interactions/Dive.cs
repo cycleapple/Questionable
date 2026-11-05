@@ -1,4 +1,5 @@
-﻿using System;
+using ModifierFlag = FFXIVClientStructs.FFXIV.Client.System.Input.KeyModifierFlag;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -87,17 +88,17 @@ internal static class Dive
 
         private unsafe void Descend()
         {
-            var keybind = new UIInputData.Keybind();
+            var keybind = new Keybind();
             var keyName = Utf8String.FromString("MOVE_DESCENT");
             var inputData = UIInputData.Instance();
             inputData->GetKeybindByName(keyName, (Keybind*)&keybind);
 
-            logger.LogInformation("Dive keybind: {Key1} + {Modifier1}, {Key2} + {Modifier2}", keybind.Key,
-                keybind.Modifier, keybind.AltKey, keybind.AltModifier);
+            logger.LogInformation("Dive keybind: {Key1} + {Modifier1}, {Key2} + {Modifier2}", keybind.KeySettings[0].Key,
+                keybind.KeySettings[0].KeyModifier, keybind.KeySettings[1].Key, keybind.KeySettings[1].KeyModifier);
 
             // find the shortest of the two key combinations to press
             List<List<nint>?> availableKeys =
-                [GetKeysToPress(keybind.Key, keybind.Modifier), GetKeysToPress(keybind.AltKey, keybind.AltModifier)];
+                [GetKeysToPress(keybind.KeySettings[0].Key, keybind.KeySettings[0].KeyModifier), GetKeysToPress(keybind.KeySettings[1].Key, keybind.KeySettings[1].KeyModifier)];
             List<nint>? realKeys = availableKeys.Where(x => x != null).Select(x => x!).MinBy(x => x.Count);
             if (realKeys == null || realKeys.Count == 0)
                 throw new TaskException("No useable keybind found for diving");

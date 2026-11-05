@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Dalamud.Utility;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using Lumina.Excel.Sheets;
@@ -27,10 +27,10 @@ public abstract record ItemReward(ItemRewardDetails Item)
 {
     internal static ItemReward? CreateFromItem(Item item, ElementId elementId)
     {
-        if (item.ItemAction.ValueNullable?.Type is 1322)
+        if (item.ItemAction.ValueNullable?.Action.RowId is 1322)
             return new MountReward(new ItemRewardDetails(item, elementId), item.ItemAction.Value.Data[0]);
 
-        if (item.ItemAction.ValueNullable?.Type is 853)
+        if (item.ItemAction.ValueNullable?.Action.RowId is 853)
             return new MinionReward(new ItemRewardDetails(item, elementId), item.ItemAction.Value.Data[0]);
 
         if (item.AdditionalData.GetValueOrDefault<Orchestrion>() is { } orchestrionRoll)
@@ -39,7 +39,7 @@ public abstract record ItemReward(ItemRewardDetails Item)
         if (item.AdditionalData.GetValueOrDefault<TripleTriadCard>() is { } tripleTriadCard)
             return new TripleTriadCardReward(new ItemRewardDetails(item, elementId), (ushort)tripleTriadCard.RowId);
 
-        if (item.ItemAction.ValueNullable?.Type is 20086)
+        if (item.ItemAction.ValueNullable?.Action.RowId is 20086)
             return new FashionAccessoryReward(new ItemRewardDetails(item, elementId), item.ItemAction.Value.Data[0]);
 
         return null;

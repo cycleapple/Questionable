@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -436,7 +436,7 @@ internal sealed class MovementController : IDisposable
             // if we're in towns/event areas, jog is a neat fallback (if we're not already jogging,
             // if we're too close then sprinting will barely benefit us)
             if (!_gameFunctions.HasStatus(EStatus.Jog) &&
-                GameMain.Instance()->CurrentTerritoryIntendedUseId is 0 or 7 or 13 or 14 or 15 or 19 or 23 or 29)
+                (uint)GameMain.Instance()->CurrentTerritoryIntendedUseId is 0 or 7 or 13 or 14 or 15 or 19 or 23 or 29)
                 sprintDistance = 30f;
 
             if (actualDistance > sprintDistance &&

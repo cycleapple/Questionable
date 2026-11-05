@@ -1,0 +1,26 @@
+diff --git a/NotificationMasterAPI/NotificationMasterAPI.csproj b/NotificationMasterAPI/NotificationMasterAPI.csproj
+index 6797a40..c7fbdd2 100644
+--- a/NotificationMasterAPI/NotificationMasterAPI.csproj
++++ b/NotificationMasterAPI/NotificationMasterAPI.csproj
+@@ -6,7 +6,7 @@
+     </PropertyGroup>
+ 
+     <PropertyGroup>
+-        <TargetFramework>net9.0-windows7.0</TargetFramework>
++        <TargetFramework>net10.0-windows7.0</TargetFramework>
+         <Platforms>x64</Platforms>
+         <LangVersion>latest</LangVersion>
+         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+diff --git a/NotificationMasterAPI/packages.lock.json b/NotificationMasterAPI/packages.lock.json
+index 7e21c8a..2a64009 100644
+--- a/NotificationMasterAPI/packages.lock.json
++++ b/NotificationMasterAPI/packages.lock.json
+@@ -1,6 +1,6 @@
+ {
+   "version": 1,
+   "dependencies": {
+-    "net9.0-windows7.0": {}
++    "net10.0-windows7.0": {}
+   }
+ }
+\ No newline at end of file

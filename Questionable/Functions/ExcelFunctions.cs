@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Dalamud.Plugin.Services;
 using Dalamud.Utility;
@@ -93,7 +93,7 @@ internal sealed class ExcelFunctions(IDataManager dataManager, ILogger<ExcelFunc
         else if (excelSheet == "GimmickYesNo")
         {
             var questRow = _dataManager.GetExcelSheet<GimmickYesNo>().GetRowOrDefault(rowId);
-            return questRow?.Unknown0;
+            return questRow?.Message;
         }
         else if (excelSheet == "Warp")
         {
